@@ -112,14 +112,15 @@
 ![image](https://user-images.githubusercontent.com/117247400/209891427-8d014278-9d36-4dbd-b41c-271c351a2d93.JPG)
 
     - 각 팀원이 서비스 시나리오에 맞추어 이벤트를 도출한다
-    - Naming Rule을 준수하여 이벤트명을 변경한다(영문표기, 대문자로 시작)
+    - Naming Rule을 준수하여 이벤트명을 변경한다 (영문표기, 대문자로 시작)
         
 ### 부적격 이벤트 탈락
 ![image](https://user-images.githubusercontent.com/117247400/209891433-9f782353-f6e2-4e05-bd8c-b36cc6d0c6b0.JPG)
 
-    - 과정 중 도출된 잘못된 도메인 이벤트들을 걸러내는 작업을 수행함
-        1. 상품을 선택(ProductSeleted)하는 과정은 오더 처리에 포함되는 사항이므로 제외
-        2. 중복된 이벤트를 제외(deliverytoDomastic, DeliveryStarted)
+    - 과정 중 도출된 잘못된 도메인 이벤트들을 걸러내는 작업을 수행한다
+        1. 상품을 선택(ProductSeleted)하는 이벤트는 오더 처리에 포함되므로 제외
+        2. 명칭은 다르지만 기능이 중복된 이벤트를 제외 (deliverytoDomastic, DeliveryStarted)
+        3. view로 구현되어야 하는 기능 제외 (kakaoNotification, Notified)
 
 ### 액터, 커맨드 부착하여 읽기 좋게
 ![image](https://user-images.githubusercontent.com/117131393/209895628-19a79f49-1add-47d3-8049-966ad26a9381.JPG)

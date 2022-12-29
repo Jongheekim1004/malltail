@@ -140,7 +140,7 @@
        3. General Domain - pay
           결제서비스로 3rd Party 외부 서비스를 사용하는 것이 경쟁력이 높음
     - View Model 추가
-         - 고객이 주문상태를 중간 중간 조회하기 위한 페이지는 view 모델로 생성한다
+        - 고객이 주문상태를 중간 중간 조회하기 위한 페이지는 view 모델로 생성한다
 
 ### 폴리시 부착
 
@@ -158,7 +158,7 @@
 ![image](https://user-images.githubusercontent.com/117131393/209895686-71c4645f-10a8-41e6-8a93-461df4addc07.JPG)
 
     - Req/Resp
-       - 주문을 할 경우(Order) Pay를 요청하고, Pay 여부에 대한 결과 값을 요청한다
+       - 주문을 할 경우(Order) Pay를 요청하고, Pay 여부에 대한 응답 결과를 요구한다
     - Pub/Sub
        - 주문이 취소되면(OrderCanceled) 결제요청도 취소된다(canceled payment)
        - 결제가 완료되면(OrderPaid) Shop에 주문된 상품을 업데이트한다(orderinfoUpdate)

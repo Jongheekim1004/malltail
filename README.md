@@ -157,6 +157,17 @@
 
 ![image](https://user-images.githubusercontent.com/117131393/209895686-71c4645f-10a8-41e6-8a93-461df4addc07.JPG)
 
+    - Req/Resp
+       1. 주문을 할 경우(Order) Pay를 요청하고, Pay 여부에 대한 결과 값을 요청한다
+    - Pub/Sub
+       1. 주문이 취소되면(OrderCanceled) 결제요청도 취소된다(canceled payment)
+       2. 결제가 완료되면(OrderPaid) Shop에 주문된 상품을 업데이트한다(orderinfoUpdate)
+       3. 상점 주인이 상품 주문을 진행하면(OrderDeliveryStarted) 해외배송이 시작된다(start shipping)
+       4. 해외배송이 완료되면(ShippingCompleted) 통관절차 리스트에 추가된다(add to customs list)
+    - cancelAvailableCheck - Circuit Breaker/Fallback
+       1. 해외배송이 시작되면(shipping) 주문을 취소할수 없다(order cancel)
+       
+       
 ### 완성된 모형
 
 ![image](https://user-images.githubusercontent.com/117131393/209906848-f28a57bf-decc-4f84-b812-1a848c6d06a4.JPG)

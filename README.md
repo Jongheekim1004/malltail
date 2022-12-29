@@ -111,6 +111,9 @@
 ### 이벤트 도출
 ![image](https://user-images.githubusercontent.com/117247400/209891427-8d014278-9d36-4dbd-b41c-271c351a2d93.JPG)
 
+    - 각 팀원이 서비스 시나리오에 맞추어 이벤트를 도출한다
+    - Naming Rule을 준수하여 이벤트명을 변경한다(영문표기, 대문자로 시작)
+        
 ### 부적격 이벤트 탈락
 ![image](https://user-images.githubusercontent.com/117247400/209891433-9f782353-f6e2-4e05-bd8c-b36cc6d0c6b0.JPG)
 

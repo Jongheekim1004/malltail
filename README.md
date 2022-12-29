@@ -130,7 +130,7 @@
 
 ### 바운디드 컨텍스트로 묶기
 
-![image](https://user-images.githubusercontent.com/117131393/209895660-bd0dd01f-a52a-459f-9b2f-c1a708e76f80.JPG)
+![image](https://user-images.githubusercontent.com/117131393/209908342-9b45f146-51e8-4f56-a87f-38eac6c84cfc.JPG)
 
     - 도메인 서열 분리 
         - Core Domain:  app(front), store : 없어서는 안될 핵심 서비스이며, 연견 Up-time SLA 수준을 99.999% 목표, 배포주기는 app 의 경우 1주일 1회 미만, store 의 경우 1개월 1회 미만

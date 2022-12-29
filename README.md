@@ -188,6 +188,7 @@
     - 국내배송이 완료된다 (ok)
 
 ![image](https://user-images.githubusercontent.com/117247400/209891438-feb3025c-1a34-4eaa-8787-e4922b07ab03.jpg)
+
     - 고객이 주문을 취소할 수 있다 (ok) 
     - 주문이 취소되면 결제가 취소된다 (ok) 
     - 고객이 주문상태를 중간중간 조회한다 (View-green sticker 의 추가로 ok) 

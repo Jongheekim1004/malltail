@@ -126,7 +126,7 @@
 
     - 과정 중 도출된 잘못된 도메인 이벤트들을 걸러내는 작업을 수행함
         1. 상품을 선택(ProductSeleted)하는 과정은 오더 처리에 포함되는 사항이므로 제외
-        1. 중복된 이벤트를 제외
+        2. 중복된 이벤트를 제외(deliverytoDomastic, DeliveryStarted)
 
 ### 액터, 커맨드 부착하여 읽기 좋게
 ![image](https://user-images.githubusercontent.com/487999/79683614-4ee30f80-8266-11ea-9a50-68cdff2dcc46.png)

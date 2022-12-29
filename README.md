@@ -175,12 +175,6 @@
     - 주문상태가 바뀔 때 마다 카톡으로 알림을 보낸다 (?)
 
 
-### 모델 수정
-
-![image](https://user-images.githubusercontent.com/487999/79684176-4e4c7800-826a-11ea-8deb-b7b053e5d7c6.png)
-    
-    - 수정된 모델은 모든 요구사항을 커버함.
-
 ### 비기능 요구사항에 대한 검증
 
 ![image](https://user-images.githubusercontent.com/117247400/209891418-7e09bd47-78ba-4cea-a029-0d8546c7c97d.jpg)

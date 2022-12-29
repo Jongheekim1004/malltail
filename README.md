@@ -147,25 +147,25 @@
 ![image](https://user-images.githubusercontent.com/117131393/209895674-be5e3413-480d-4b29-adcb-8efcb5f1c18e.JPG)
 
     - 일부 command를 policy로 변경한다
-       1. shop에서 orderSeliveryStart를 진행하면 shipping이 시작되므로 start shipping은 policy로 변경 
-       2. cancel payment는 앞선 order처리에서 orderCanceled 시 후속되는 과정이므로 policy로 변경
+       - shop에서 orderSeliveryStart를 진행하면 shipping이 시작되므로 start shipping은 policy로 변경 
+       - cancel payment는 앞선 order처리에서 orderCanceled 시 후속되는 과정이므로 policy로 변경
     - 신규로 policy를 추가한다
-       1. 결제가 완료된 주문 건은 orderInfoUpdate policy로 shop에 추가
-       2. 통관절차에서 승인된 상품 리스트는 add to customs list라는 policy로 구현
+       - 결제가 완료된 주문 건은 orderInfoUpdate라는 policy로 구현 후 shop에 추가
+       - 통관절차에서 승인된 상품 리스트는 add to customs list라는 policy로 구현 후 delivery에 추가
  
 ### 폴리시의 이동과 컨텍스트 매핑 (점선은 Pub/Sub, 실선은 Req/Resp)
 
 ![image](https://user-images.githubusercontent.com/117131393/209895686-71c4645f-10a8-41e6-8a93-461df4addc07.JPG)
 
     - Req/Resp
-       1. 주문을 할 경우(Order) Pay를 요청하고, Pay 여부에 대한 결과 값을 요청한다
+       - 주문을 할 경우(Order) Pay를 요청하고, Pay 여부에 대한 결과 값을 요청한다
     - Pub/Sub
-       1. 주문이 취소되면(OrderCanceled) 결제요청도 취소된다(canceled payment)
-       2. 결제가 완료되면(OrderPaid) Shop에 주문된 상품을 업데이트한다(orderinfoUpdate)
-       3. 상점 주인이 상품 주문을 진행하면(OrderDeliveryStarted) 해외배송이 시작된다(start shipping)
-       4. 해외배송이 완료되면(ShippingCompleted) 통관절차 리스트에 추가된다(add to customs list)
+       - 주문이 취소되면(OrderCanceled) 결제요청도 취소된다(canceled payment)
+       - 결제가 완료되면(OrderPaid) Shop에 주문된 상품을 업데이트한다(orderinfoUpdate)
+       - 상점 주인이 상품 주문을 진행하면(OrderDeliveryStarted) 해외배송이 시작된다(start shipping)
+       - 해외배송이 완료되면(ShippingCompleted) 통관절차 리스트에 추가된다(add to customs list)
     - cancelAvailableCheck - Circuit Breaker/Fallback
-       1. 해외배송이 시작되면(shipping) 주문을 취소할 수 없다(order cancel)
+       - 해외배송이 시작되면(shipping) 주문을 취소할 수 없다(order cancel)
        
        
 ### 완성된 모형
@@ -173,7 +173,7 @@
 ![image](https://user-images.githubusercontent.com/117131393/209906848-f28a57bf-decc-4f84-b812-1a848c6d06a4.JPG)
 
     - Attribute를 추가한다
-       변수를 전달하는 주체와 타겟을 고려하여 Attribute를 선언하며 Event에 Sync를 맞춤
+       - 변수를 전달하는 주체와 타겟을 고려하여 Attribute를 선언하며 Event에 Sync를 맞춤
 
 ### 완성본에 대한 기능적/비기능적 요구사항을 커버하는지 검증
 

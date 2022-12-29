@@ -677,7 +677,7 @@ Shortest transaction:	        0.00
 
 ### 오토스케일 아웃
 앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다. 
-
+https://labs.msaez.io/#/courses/cna-full/32c3e5c0-7cd9-11ed-b37b-0b0e73d05d98/#ops-autoscale
 
 - 결제서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 15프로를 넘어서면 replica 를 10개까지 늘려준다:
 ```
@@ -713,6 +713,7 @@ Concurrency:		       96.02
 
 
 ## 무정지 재배포
+https://labs.msaez.io/#/courses/cna-full/32c3e5c0-7cd9-11ed-b37b-0b0e73d05d98/#ops-readiness
 
 * 먼저 무정지 재배포가 100% 되는 것인지 확인하기 위해서 Autoscaler 이나 CB 설정을 제거함
 

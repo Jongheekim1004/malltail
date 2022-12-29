@@ -147,11 +147,11 @@
 ![image](https://user-images.githubusercontent.com/117131393/209895674-be5e3413-480d-4b29-adcb-8efcb5f1c18e.JPG)
 
     - 일부 command를 policy로 변경한다
-      1. shop에서 orderSeliveryStart를 진행하면 shipping이 시작되므로 start shipping은 policy로 변경 
-      2. cancel payment는 앞선 order처리에서 orderCanceled 시 후속되는 과정이므로 policy로 변경
+       1. shop에서 orderSeliveryStart를 진행하면 shipping이 시작되므로 start shipping은 policy로 변경 
+       2. cancel payment는 앞선 order처리에서 orderCanceled 시 후속되는 과정이므로 policy로 변경
     - 신규로 policy를 추가한다
-      1. 결제가 완료된 주문 건은 orderInfoUpdate policy로 shop에 추가
-      2. 통관절차에서 승인된 상품 리스트는 add to customs list라는 policy로 구현
+       1. 결제가 완료된 주문 건은 orderInfoUpdate policy로 shop에 추가
+       2. 통관절차에서 승인된 상품 리스트는 add to customs list라는 policy로 구현
   
 ### 폴리시의 이동과 컨텍스트 매핑 (점선은 Pub/Sub, 실선은 Req/Resp)
 

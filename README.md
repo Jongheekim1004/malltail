@@ -142,17 +142,10 @@
     - View Model 추가
          - 고객이 주문상태를 중간 중간 조회하기 위한 페이지는 view 모델로 생성한다
 
-### 폴리시 부착 
+### 폴리시 부착 (괄호는 수행주체, 폴리시 부착을 둘째단계에서 해놔도 상관 없음. 전체 연계가 초기에 드러남)
 
 ![image](https://user-images.githubusercontent.com/117131393/209895674-be5e3413-480d-4b29-adcb-8efcb5f1c18e.JPG)
 
-    - 일부 command를 policy로 변경한다
-       1. shop에서 orderSeliveryStart를 진행하면 shipping이 시작되므로 start shipping은 policy로 변경 
-       2. cancel payment는 앞선 order처리에서 orderCanceled 시 후속되는 과정이므로 policy로 변경
-    - 신규로 policy를 추가한다
-       1. 결제가 완료된 주문 건은 orderInfoUpdate policy로 shop에 추가
-       2. 통관절차에서 승인된 상품 리스트는 add to customs list라는 policy로 구현
-  
 ### 폴리시의 이동과 컨텍스트 매핑 (점선은 Pub/Sub, 실선은 Req/Resp)
 
 ![image](https://user-images.githubusercontent.com/117131393/209895686-71c4645f-10a8-41e6-8a93-461df4addc07.JPG)
@@ -161,8 +154,7 @@
 
 ![image](https://user-images.githubusercontent.com/117131393/209906848-f28a57bf-decc-4f84-b812-1a848c6d06a4.JPG)
 
-    - Attribute를 추가한다
-      변수를 전달하는 주체와 타겟을 고려하여 Attribute를 선언하며 Event에 Sync를 맞추어준다
+    - View Model 추가
 
 ### 완성본에 대한 기능적/비기능적 요구사항을 커버하는지 검증
 
@@ -194,20 +186,27 @@
 
 # 구현:
 
-분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라, 각 BC별로 대변되는 마이크로 서비스들을 스프링부트와 파이선으로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다 (각자의 포트넘버는 8081 ~ 808n 이다)
+분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라, 각 BC별로 대변되는 마이크로 서비스들을 스프링부트로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다 (각자의 포트넘버는 8081 ~ 808n 이다)
 
 ```
-cd app
+cd order
 mvn spring-boot:run
 
 cd pay
 mvn spring-boot:run 
 
-cd store
+cd shop
 mvn spring-boot:run  
 
-cd customer
-python policy-handler.py 
+cd shipping
+mvn spring-boot:run
+
+cd delivery
+mvn spring-boot:run
+
+cd viewPage
+mvn spring-boot:run
+
 ```
 
 ## DDD 의 적용
@@ -217,74 +216,66 @@ python policy-handler.py
   응집성은 최대화하도록 설계하였다.
 
 ```
-package fooddelivery;
-
-import javax.persistence.*;
-import org.springframework.beans.BeanUtils;
-import java.util.List;
-
 @Entity
-@Table(name="결제이력_table")
-public class 결제이력 {
+@Table(name="Order_table")
+@Data
+
+public class Order  {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    private String orderId;
-    private Double 금액;
+    private String customerId;
+    private Long itemNo;
+    private Long qty;
+    private Date createDate;
+    private String orderStatus;
+    private String deliveryStatus;
+    private String customerAddress;
+    private String customerName;
+    private String phoneNumber;
+    private Date updateDate;
 
-    public Long getId() {
-        return id;
+    @PostPersist
+    public void onPostPersist(){
+        //Following code causes dependency to external APIs
+        // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
+
+        Ordered ordered = new Ordered(this);
+        ordered.publishAfterCommit();
+
+        OrderCanceled orderCanceled = new OrderCanceled(this);
+        orderCanceled.publishAfterCommit();
+
+        // Get request from Shipping
+        //malltail.external.Shipping shipping =
+        //    Application.applicationContext.getBean(malltail.external.ShippingService.class)
+        //    .getShipping(/** mapping value needed */);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public static OrderRepository repository(){
+        OrderRepository orderRepository = OrderApplication.applicationContext.getBean(OrderRepository.class);
+        return orderRepository;
     }
-    public String getOrderId() {
-        return orderId;
+    
+    public void cancel(){
     }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-    public Double get금액() {
-        return 금액;
-    }
-
-    public void set금액(Double 금액) {
-        this.금액 = 금액;
-    }
-
 }
 
-```
-- Entity Pattern 과 Repository Pattern 을 적용하여 JPA 를 통하여 다양한 데이터소스 유형 (RDB or NoSQL) 에 대한 별도의 처리가 없도록 데이터 접근 어댑터를 자동 생성하기 위하여 Spring Data REST 의 RestRepository 를 적용하였다
-```
-package fooddelivery;
-
-import org.springframework.data.repository.PagingAndSortingRepository;
-
-public interface 결제이력Repository extends PagingAndSortingRepository<결제이력, Long>{
-}
 ```
 - 적용 후 REST API 의 테스트
 ```
-# app 서비스의 주문처리
-http localhost:8081/orders item="통닭"
-
-# store 서비스의 배달처리
-http localhost:8083/주문처리s orderId=1
+# order 서비스의 주문처리
+http :8081/orders id=1 itemNo=1001
 
 # 주문 상태 확인
-http localhost:8081/orders/1
+http localhost:8086/statusViews/1
 
 ```
 
 
 ## Saga-적용
 
-주문, 결제, 샵관리, delivery, shipping으로 서비스를 분리하여 타 서비스의 처리 여부와는 상관없이 각 서비스의 요청 처리만을 완료처리하고
-각 요청 정보를 Kafka를 이용하여 pub/sub으로 공유함으로써 장애간섭최소화를 달성하고 Loosely coupled architecture를 구현한다.
 
 ## CQRS-적용
 
@@ -294,6 +285,12 @@ http localhost:8081/orders/1
 - Table 모델링(statusView)
 
 ![image](https://user-images.githubusercontent.com/117247400/209908194-78527ae4-a404-4217-9d9a-54a594ed99fc.png)
+
+- viewPage를 통해 구현 (Order, Shipping, Delivery 등 이벤트 발생 시, Pub/Sub 기반으로 별도 statusView 테이블에 저장)
+- 실제로 view 페이지를 조회해 보면 모든 order에 대한 전반적인 예약 상태, 결제 상태, 리뷰 건수 등의 정보를 종합적으로 알 수 있다.
+
+![image](https://user-images.githubusercontent.com/117327386/209909238-340ddebf-6c09-4390-b1bd-df1e6e613562.png)
+
 
 
 ## Correlation-적용
@@ -336,7 +333,7 @@ public interface 주문Repository extends JpaRepository<Order, UUID>{
 
 ## 폴리글랏 프로그래밍
 
-주문관리 서비스의 시나리오인 주문상태, 배달상태, 결재상태 변경에 따라 각 이벤트를 수신하여 처리하는 Kafka consumer 로 구현되었고 코드는 다음과 같다:
+고객관리 서비스(customer)의 시나리오인 주문상태, 배달상태 변경에 따라 고객에게 카톡메시지 보내는 기능의 구현 파트는 해당 팀이 python 을 이용하여 구현하기로 하였다. 해당 파이썬 구현체는 각 이벤트를 수신하여 처리하는 Kafka consumer 로 구현되었고 코드는 다음과 같다:
 ```
 from flask import Flask
 from redis import Redis, RedisError
@@ -519,7 +516,7 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 ## Deploy
 
 
-이번 캡스톤 프로젝트에서는 CI/CD 방식이 아닌 각 서비스들을 개별 deploy하여 반영하는 방식으로 적용했다.
+각 구현체들은 각자의 source repository 에 구성되었고, 이번 캡스톤 프로젝트에서는 각 서비스들을 개별적으로 반영하는 방식으로 구현
 
 
 ## 동기식 호출 / 서킷 브레이킹 / 장애격리
@@ -527,7 +524,6 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 * 서킷 브레이킹 프레임워크의 선택: Spring FeignClient + Hystrix 옵션을 사용하여 구현함
 
 시나리오는 단말앱(app)-->결제(pay) 시의 연결을 RESTful Request/Response 로 연동하여 구현이 되어있고, 결제 요청이 과도할 경우 CB 를 통하여 장애격리.
--> 주문 취소시 배송이 시작되었을 경우 취소가 이뤄지지 않도록 CB 처리하여 장애 격리
 
 - Hystrix 를 설정:  요청처리 쓰레드에서 처리시간이 610 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
 ```

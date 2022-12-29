@@ -208,7 +208,7 @@
 
 # 구현:
 
-분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라, 각 BC별로 대변되는 마이크로 서비스들을 스프링부트로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다 (각자의 포트넘버는 8081 ~ 808n 이다)
+분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라, 각 BC별로 대변되는 마이크로 서비스들을 스프링부트로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다 (각자의 포트넘버는 8081 ~ 8086 이다)
 
 ```
 cd order
@@ -233,8 +233,7 @@ mvn spring-boot:run
 
 ## DDD 의 적용
 
-- 각 서비스내에 도출된 핵심 Aggregate Root 객체를 Entity 로 선언하였다. 도메인 기반으로 비즈니스 목적별로 분류하여 서비스들을 구성하도록 하였다.
-  한글로 식별자를 이해하기 쉽게 구성하고 다시 영문으로 변환하여 프로그램에서 바로 사용할 수 있도록 하였다. 최대한 어플리케이션 또는 그 안의 모듈간의 의존성은 최소화하고, 
+- 각 서비스내에 도출된 핵심 Aggregate Root 객체를 Entity 로 선언하였다. 도메인 기반으로 비즈니스 목적별로 분류하여 서비스들을 구성하도록 하였다. (예시는 order 마이크로 서비스) 이때 가능한 현업에서 사용하는 언어 (유비쿼터스 랭귀지)를 그대로 사용하려고 노력했다. 최대한 어플리케이션 또는 그 안의 모듈간의 의존성은 최소화하고, 
   응집성은 최대화하도록 설계하였다.
 
 ```
@@ -246,61 +245,99 @@ public class Order  {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
-    private String customerId;
-    private Long itemNo;
-    private Long qty;
-    private Date createDate;
-    private String orderStatus;
-    private String deliveryStatus;
-    private String customerAddress;
-    private String customerName;
-    private String phoneNumber;
-    private Date updateDate;
-
-    @PostPersist
-    public void onPostPersist(){
-        //Following code causes dependency to external APIs
-        // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
-
-        Ordered ordered = new Ordered(this);
-        ordered.publishAfterCommit();
-
-        OrderCanceled orderCanceled = new OrderCanceled(this);
-        orderCanceled.publishAfterCommit();
-
-        // Get request from Shipping
-        //malltail.external.Shipping shipping =
-        //    Application.applicationContext.getBean(malltail.external.ShippingService.class)
-        //    .getShipping(/** mapping value needed */);
-    }
-
-    public static OrderRepository repository(){
-        OrderRepository orderRepository = OrderApplication.applicationContext.getBean(OrderRepository.class);
-        return orderRepository;
-    }
     
-    public void cancel(){
-    }
+    private Long id;
+    
+    private String customerId;
+    
+    private Long itemNo;
+    
+    private Long qty;
+    
+    private Date createDate;
+    
+    private String orderStatus;
+    
+    private String deliveryStatus;
+    
+    private String customerAddress;
+    
+    private String customerName;
+    
+    private String phoneNumber;
+    
+    private Date updateDate;
 }
 
 ```
 - 적용 후 REST API 의 테스트
 ```
 # order 서비스의 주문처리
-http :8081/orders id=1 itemNo=1001
+http localhost:8081/orders itemNo=1001
+
+# order 서비스의 취소처리
+http PUT :8081/orders/1/cancel
 
 # 주문 상태 확인
-http localhost:8086/statusViews/1
+http localhost:8081/orders/1
+
+# View Page 확인
+http localhost:8086/statusViews
 
 ```
 
 
-## Saga-적용
+## Saga (Pub/Sub) -적용
 
-주문관리, 결재, 샵관리, delivery, shipping으로 서비스를 분리하여 관리되도록 구현하였다.
-각 서비스들은 요청에 대한 처리만을 담당하고 다른 서비스의 처리여부에는 관여하지 않는다.
-각 서비스들의 처리 상태에 대한 정보를 Kafka를 이용하여 pub/sub 하도록 처리하였다.
+분석단계에서의 조건 중 하나로 주문(order)와 결재(pay) 간의 호출은 동기식 일관성을 유지하는 트랙잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다.
+
+- 결제서비스를 호출하기 위하여 Stub과 (FeignClient) 를 이용하여 Service 대행 인터페이스 (Proxy) 를 구현
+```
+@FeignClient(name = "pay", url = "${api.url.pay}")
+public interface PaymentService {
+    @RequestMapping(method = RequestMethod.POST, path = "/payments")
+    public void pay(@RequestBody Payment payment);
+}
+```
+
+- 주문이 완료되는 시점에(@onPostPersist), 필요한 값을 설정하여 결재를 처리한다.
+```
+    @PostPersist
+    public void onPostPersist(){
+
+        //Following code causes dependency to external APIs
+        // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
+
+        malltail.external.Payment payment = new malltail.external.Payment();
+        payment.setOrderNo(getId());
+        payment.setItemNo(getItemNo());
+        payment.setPaystatus("Paid");
+
+        // mappings goes here
+        OrderApplication.applicationContext
+            .getBean(malltail.external.PaymentService.class)
+            .pay(payment);
+
+        Ordered ordered = new Ordered(this);
+        ordered.publishAfterCommit();
+    }
+
+```
+
+- 동기식 호출에서는 호출 시간에 따른 타임 커플링이 발생하며, 결제 시스템이 장애가 나면 주문도 못받는다는 것을 확인하였다.
+```
+1. 결제 (pay) 서비스를 잠시 중지한 경우 : Fail
+![image](https://user-images.githubusercontent.com/13111333/209918804-0b759268-5b1d-44ad-8f81-92a9b775221e.png)
+
+2. 결재 (pay) 서비스를 실행한 경우 : Success
+# 주문내역 (order) 생성됨
+![image](https://user-images.githubusercontent.com/13111333/209919069-c556bdc1-de8c-41fb-81fc-111c3e4926ad.png)
+
+# 결재 (pay) 생성됨
+![image](https://user-images.githubusercontent.com/13111333/209919576-60b90170-5eb7-4d0e-a68c-3fc537e3b779.png)
+
+
+```
 
 ## CQRS-적용
 
@@ -317,14 +354,13 @@ http localhost:8086/statusViews/1
 ![image](https://user-images.githubusercontent.com/117327386/209909238-340ddebf-6c09-4390-b1bd-df1e6e613562.png)
 
 
-
 ## Correlation-적용
 
-고객이 주문취소 요청을 했을 경우, 결재 완료된 요청건에 대해 주문상태가 취소로 변경되었음을 확인하고 결재 취소 처리를 한다.
+고객이 주문취소 요청을 했을 경우, 결재 완료된 요청건에 대해 결재 취소 처리를 한다.
 
 ## 폴리글랏 퍼시스턴스
 
-현재 구현중인 몰테일은 실사용을 위한 사이트로 오픈하기 전에 데모버전의 테스트성 사이트로 그에 적합한 인메모리 DB인 H2를 사용하여 필요한 DB의 기능을 활용하였다.
+앱프런트 (app) 는 서비스 특성상 많은 사용자의 유입과 상품 정보의 다양한 콘텐츠를 저장해야 하는 특징으로 인해 RDB 보다는 Document DB / NoSQL 계열의 데이터베이스인 Mongo DB 를 사용하기로 하였다. 이를 위해 order 의 선언에는 @Entity 가 아닌 @Document 로 마킹되었으며, 별다른 작업없이 기존의 Entity Pattern 과 Repository Pattern 적용과 데이터베이스 제품의 설정 (application.yml) 만으로 MongoDB 에 부착시켰다
 
 ```
 # Order.java

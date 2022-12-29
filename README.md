@@ -328,7 +328,7 @@ public interface PaymentService {
 ```
 1. 결제 (pay) 서비스를 잠시 중지한 경우 : Fail
 
-![image](https://user-images.githubusercontent.com/13111333/209918804-0b759268-5b1d-44ad-8f81-92a9b775221e.png)
+![image](https://user-images.githubusercontent.com/13111333/209922057-a586d154-bf1d-4303-af66-ee4770f4ea85.png)
 
 2. 결재 (pay) 서비스를 실행한 경우 : Success
 # 주문내역 (order) 생성됨

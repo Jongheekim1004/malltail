@@ -4,7 +4,7 @@
 
 # Table of contents
 
-- [해외시스템](#---)
+- [해외직구시스템](#---)
   - [서비스 시나리오](#서비스-시나리오)
   - [체크포인트](#체크포인트)
   - [분석/설계](#분석설계)
@@ -40,7 +40,7 @@
 
 비기능적 요구사항
 1. 트랜잭션
-    1. 결제가 되지 않은 주문건은 아예 거래가 성립되지 않아야 한다  Sync 호출 
+    1. 결제가 되지 않은 주문건은 아예 거래가 성립되지 않아야 한다 - Sync 호출 
 1. 장애격리
     1. 상점관리 기능이 수행되지 않더라도 주문은 365일 24시간 받을 수 있어야 한다 - Async (event-driven), Eventual Consistency
     1. 해외배송, 국내배송 기능이 수행되지 않더라도 주문은 365일 24시간 받을 수 있어야 한다 - Async (event-driven), Eventual Consistency
@@ -136,7 +136,7 @@
        1. Core Domain - order, shop  
           핵심 서비스이며, Up-time SLA 수준을 99.999% 목표, 배포주기는 1주일 1회 미만
        2. Supporting Domain - shipping, delivery
-          경쟁력을 내기 위한 서비스이며, SLA 수준은 연간 60% 이상 uptime 목표, 배포주기는 1주일 1회 이상을 기준으로 함.
+          경쟁력을 내기 위한 서비스이며, SLA 수준은 연간 60% 이상 uptime 목표, 배포주기는 1주일 1회 이상을 기준으로 함
        3. General Domain - pay
           결제서비스로 3rd Party 외부 서비스를 사용하는 것이 경쟁력이 높음
     - View Model 추가

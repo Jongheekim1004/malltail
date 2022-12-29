@@ -14,7 +14,7 @@
     - [CQRS 의 적용](#cqrs-적용)
     - [Correlation 의 적용](#ddd-의-적용)     
     - [Request/Response 의 적용](#ddd-의-적용)         
-    - [Polyglot persistence / programming](#폴리글랏-퍼시스턴스)
+    - [Polyglot persistence / programming](#폴리글랏-퍼시스턴스-및-프로그래밍)
     - [동기식 호출 과 Fallback 처리](#동기식-호출-과-Fallback-처리)  
     - [비동기식 호출 과 Eventual Consistency](#비동기식-호출-과-Eventual-Consistency)
   - [운영](#운영)

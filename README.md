@@ -356,11 +356,11 @@ public interface PaymentService {
 
 ## Correlation-적용
 
-고객이 주문취소 요청을 했을 경우, 결재 완료된 요청건에 대해 결재 취소 처리를 한다.
+고객이 주문취소 요청을 했을 경우, 결재 완료된 요청건에 대해 주문상태가 취소로 변경되었음을 확인하고 결재 취소 처리를 한다.
 
 ## 폴리글랏 퍼시스턴스
 
-앱프런트 (app) 는 서비스 특성상 많은 사용자의 유입과 상품 정보의 다양한 콘텐츠를 저장해야 하는 특징으로 인해 RDB 보다는 Document DB / NoSQL 계열의 데이터베이스인 Mongo DB 를 사용하기로 하였다. 이를 위해 order 의 선언에는 @Entity 가 아닌 @Document 로 마킹되었으며, 별다른 작업없이 기존의 Entity Pattern 과 Repository Pattern 적용과 데이터베이스 제품의 설정 (application.yml) 만으로 MongoDB 에 부착시켰다
+현재 구현중인 몰테일은 실사용을 위한 사이트로 오픈하기 전에 데모버전의 테스트성 사이트로 그에 적합한 인메모리 DB인 H2를 사용하여 필요한 DB의 기능을 활용하였다.
 
 ```
 # Order.java

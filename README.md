@@ -266,7 +266,7 @@ http localhost:8081/orders/1
 
 ```
 
-## Sage-적용
+## Saga-적용
 
 
 ## CQRS-적용

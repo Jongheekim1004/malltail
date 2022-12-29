@@ -100,11 +100,14 @@
 
 
 # 분석/설계
+
 ## AS-IS 조직 (Horizontally-Aligned)
 ![image](https://user-images.githubusercontent.com/117131393/209925974-cfb15977-c2b6-4613-bc5a-654ccc3c08e7.png)
 
+
 ## TO-BE 조직 (Vertically-Aligned)
 ![image](https://user-images.githubusercontent.com/117131393/209926207-82ea4be3-6cb2-49a5-9ec6-5e1d0ff6a914.png)
+
 
 
 ## Event Storming 결과

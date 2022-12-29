@@ -10,10 +10,10 @@ import java.util.Date;
 
 
 @Entity
-@Table(name="OrderManagement_table")
+@Table(name="Order_table")
 @Data
 
-public class OrderManagement  {
+public class Order  {
 
 
     
@@ -25,12 +25,6 @@ public class OrderManagement  {
     
     
     private Long id;
-    
-    
-    
-    
-    
-    private Long orderNo;
     
     
     
@@ -116,9 +110,9 @@ public class OrderManagement  {
 
     }
 
-    public static OrderManagementRepository repository(){
-        OrderManagementRepository orderManagementRepository = OrderApplication.applicationContext.getBean(OrderManagementRepository.class);
-        return orderManagementRepository;
+    public static OrderRepository repository(){
+        OrderRepository orderRepository = OrderApplication.applicationContext.getBean(OrderRepository.class);
+        return orderRepository;
     }
 
 

@@ -20,12 +20,10 @@
                             
                             
                             
-                            
                         </v-list-item-title>
 
                         <v-list-item-subtitle style="font-size:25px; font-weight:700;">
                             [ Id :  {{data.id }} ] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            [ OrderNo :  {{data.orderNo }} ] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             [ CustomerId :  {{data.customerId }} ] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             [ ItemNo :  {{data.itemNo }} ] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             [ Qty :  {{data.qty }} ] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -69,7 +67,7 @@
                         </v-fab-transition>
                     </template>
 
-                    <OrderManagement :offline="offline" class="video-card" :isNew="true" :editMode="true" v-model="newValue" @add="append" v-if="tick"/>
+                    <Order :offline="offline" class="video-card" :isNew="true" :editMode="true" v-model="newValue" @add="append" v-if="tick"/>
                 
                     <v-btn
                             style="postition:absolute; top:2%; right:2%"
@@ -88,12 +86,12 @@
 
 <script>
     const axios = require('axios').default;
-    import OrderManagement from './../OrderManagement.vue';
+    import Order from './../Order.vue';
 
     export default {
-        name: 'OrderManagementManager',
+        name: 'OrderManager',
         components: {
-            OrderManagement,
+            Order,
         },
         props: {
             offline: Boolean,
@@ -112,22 +110,21 @@
                 return;
             } 
 
-            var temp = await axios.get(axios.fixUrl('/ordermanagements'))
-            temp.data._embedded.ordermanagements.map(obj => obj.id=obj._links.self.href.split("/")[obj._links.self.href.split("/").length - 1])
-            this.values = temp.data._embedded.ordermanagements;
+            var temp = await axios.get(axios.fixUrl('/orders'))
+            temp.data._embedded.orders.map(obj => obj.id=obj._links.self.href.split("/")[obj._links.self.href.split("/").length - 1])
+            this.values = temp.data._embedded.orders;
             
             this.newValue = {
-                'orderNo': 0,
                 'customerId': '',
                 'itemNo': 0,
                 'qty': 0,
-                'createDate': '2022-12-28',
+                'createDate': '2022-12-29',
                 'orderStatus': '',
                 'deliveryStatus': '',
                 'customerAddress': '',
                 'customerName': '',
                 'phoneNumber': '',
-                'updateDate': '2022-12-28',
+                'updateDate': '2022-12-29',
             }
         },
         methods: {

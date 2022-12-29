@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 style = "margin-left:4.5%; margin-top:-10px;">OrderManagement</h1>
+        <h1 style = "margin-left:4.5%; margin-top:-10px;">Order</h1>
         <v-col style="margin-bottom:40px;">
             <div class="text-center">
                 <v-dialog
@@ -10,7 +10,7 @@
                         hide-overlay
                         transition="dialog-bottom-transition"
                 >
-                    <OrderManagement :offline="offline" class="video-card" :isNew="true" :editMode="true" v-model="newValue" 
+                    <Order :offline="offline" class="video-card" :isNew="true" :editMode="true" v-model="newValue" 
                             @add="append" v-if="tick"/>
 
                     <v-btn
@@ -33,7 +33,7 @@
             </div>
         </v-col>
         <v-row>
-            <OrderManagement :offline="offline" class="video-card" v-for="(value, index) in values" v-model="values[index]" v-bind:key="index" @delete="remove"/>
+            <Order :offline="offline" class="video-card" v-for="(value, index) in values" v-model="values[index]" v-bind:key="index" @delete="remove"/>
         </v-row>
     </div>
 </template>
@@ -41,12 +41,12 @@
 <script>
 
     const axios = require('axios').default;
-    import OrderManagement from './../OrderManagement.vue';
+    import Order from './../Order.vue';
 
     export default {
-        name: 'OrderManagementManager',
+        name: 'OrderManager',
         components: {
-            OrderManagement,
+            Order,
         },
         props: {
             offline: Boolean
@@ -64,21 +64,20 @@
                 return;
             } 
 
-            var temp = await axios.get(axios.fixUrl('/orderManagements'))
-            me.values = temp.data._embedded.orderManagements;
+            var temp = await axios.get(axios.fixUrl('/orders'))
+            me.values = temp.data._embedded.orders;
             
             me.newValue = {
-                'orderNo': 0,
                 'customerId': '',
                 'itemNo': 0,
                 'qty': 0,
-                'createDate': '2022-12-28',
+                'createDate': '2022-12-29',
                 'orderStatus': '',
                 'deliveryStatus': '',
                 'customerAddress': '',
                 'customerName': '',
                 'phoneNumber': '',
-                'updateDate': '2022-12-28',
+                'updateDate': '2022-12-29',
             }
         },
         methods:{

@@ -335,9 +335,11 @@ public interface PaymentService {
 2. 결재 (pay) 서비스를 실행한 경우 : Success
 
 - 주문내역 (order) 생성됨
+
 ![image](https://user-images.githubusercontent.com/13111333/209922597-941e8518-e62a-4bac-9389-396e656ef4c8.png)
 
 - 결재 (pay) 생성됨
+
 ![image](https://user-images.githubusercontent.com/13111333/209922652-539e4f0b-9584-46fc-9432-f79b3e104d69.png)
 
 
@@ -358,7 +360,69 @@ public interface PaymentService {
 
 ## Correlation-적용
 
-고객이 주문취소 요청을 했을 경우, 결재 완료된 요청건에 대해 주문상태가 취소로 변경되었음을 확인하고 결재 취소 처리를 한다.
+고객이 주문취소(cancel) 요청을 했을 경우, 결재 완료된 요청건에 대해 주문상태가 취소로 변경되었음을 확인하고 결재 취소 처리를 한다. 만약 이미 배대지배송(shipping)이 진행중인 주문건이면, 주문취소(cancel)을 할 수 없도록 동기식 구현을 적용하였다.
+
+- 주문이 취소되는 시점에 ShippingService를 조회하여 그 조건에 따라 분기처리하였다. 주문취소가 정상적으로 동작하는 경우에는 주문상태(orderStatus)를 "Canceled"로 변경한다.
+```
+    public void cancel(){
+
+        // 이미 shipping이 된 이후에는 취소할 수 없다.
+        try{
+            
+            malltail.external.Shipping shipping =
+            OrderApplication.applicationContext.getBean(malltail.external.ShippingService.class)
+            .getShipping(getId());
+
+            throw new RuntimeException("Cannot cancel!");
+        } catch (Exception e){
+            // shipping이 존재하지 않는 경우 
+            
+            // Order와 delivery 상태를 변경한다. 
+            setOrderStatus("Canceled");
+        }
+
+        OrderCanceled orderCanceled = new OrderCanceled(this);
+        orderCanceled.publishAfterCommit();
+    }
+```
+
+- 결재 (pay)의 PolicyHandler에 주문이 취소될때의 호출되는 함수 wheneverOrderCanceled_CancelPayment를 구현한다.
+```
+@Service
+@Transactional
+public class PolicyHandler{
+    @Autowired PaymentRepository paymentRepository;
+    
+    @StreamListener(KafkaProcessor.INPUT)
+    public void whatever(@Payload String eventString){}
+
+    @StreamListener(value=KafkaProcessor.INPUT, condition="headers['type']=='OrderCanceled'")
+    public void wheneverOrderCanceled_CancelPayment(@Payload OrderCanceled orderCanceled){
+
+        OrderCanceled event = orderCanceled;
+        System.out.println("\n\n##### listener CancelPayment : " + orderCanceled + "\n\n");   
+
+        // Sample Logic //
+        Payment.cancelPayment(event);
+    }
+
+}
+
+```
+
+- 주문취소(cancel) 시 결재 (pay) 정보를 업데이트 한다. 
+```
+    public static void cancelPayment(OrderCanceled orderCanceled){
+
+        repository().findById(orderCanceled.getId()).ifPresent(payment->{
+            
+            payment.setPaystatus("Refunded");
+            repository().save(payment);
+
+         });
+        
+    }
+```
 
 ## 폴리글랏 퍼시스턴스
 

@@ -161,7 +161,8 @@
 
 ![image](https://user-images.githubusercontent.com/117131393/209906848-f28a57bf-decc-4f84-b812-1a848c6d06a4.JPG)
 
-    - View Model 추가
+    - Attribute를 추가한다
+      변수를 전달하는 주체와 타겟을 고려하여 Attribute를 선언하며 Event에 Sync를 맞추어준다
 
 ### 완성본에 대한 기능적/비기능적 요구사항을 커버하는지 검증
 

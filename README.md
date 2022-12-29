@@ -145,7 +145,7 @@
 
 ![image](https://user-images.githubusercontent.com/117131393/209895686-71c4645f-10a8-41e6-8a93-461df4addc07.JPG)
 
-### 완성된 1차 모형
+### 완성된 모형
 
 ![image](https://user-images.githubusercontent.com/117131393/209906848-f28a57bf-decc-4f84-b812-1a848c6d06a4.JPG)
 

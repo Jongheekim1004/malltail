@@ -120,10 +120,10 @@
         3. view로 구현되어야 하는 기능 제외 (kakaoNotification, Notified)
 
 ### 액터, 커맨드 부착하여 읽기 좋게
-![image](https://user-images.githubusercontent.com/117131393/209895628-19a79f49-1add-47d3-8049-966ad26a9381.JPG)
+![image](https://user-images.githubusercontent.com/117131393/209906519-2eaca7f1-a0a7-4e00-82e0-54038c3a1e8b.JPG)
 
 ### 어그리게잇으로 묶기
-![image](https://user-images.githubusercontent.com/117131393/209895643-63e6b119-8cd6-40c0-b606-2e9344ea7228.JPG)
+![image](https://user-images.githubusercontent.com/117131393/209906610-0c425aa3-bd65-4156-b047-b22d13fe0e4d.JPG)
 
     - app의 Order, store 의 주문처리, 결제의 결제이력은 그와 연결된 command 와 event 들에 의하여 트랜잭션이 유지되어야 하는 단위로 그들 끼리 묶어줌
 
@@ -266,7 +266,7 @@ http localhost:8081/orders/1
 
 ```
 
-## Saga-적용
+## Sage-적용
 
 
 ## CQRS-적용

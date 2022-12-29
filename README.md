@@ -336,7 +336,7 @@ public interface 주문Repository extends JpaRepository<Order, UUID>{
 
 ## 폴리글랏 프로그래밍
 
-고객관리 서비스(customer)의 시나리오인 주문상태, 배달상태 변경에 따라 고객에게 카톡메시지 보내는 기능의 구현 파트는 해당 팀이 python 을 이용하여 구현하기로 하였다. 해당 파이썬 구현체는 각 이벤트를 수신하여 처리하는 Kafka consumer 로 구현되었고 코드는 다음과 같다:
+주문관리 서비스의 시나리오인 주문상태, 배달상태, 결재상태 변경에 따라 각 이벤트를 수신하여 처리하는 Kafka consumer 로 구현되었고 코드는 다음과 같다:
 ```
 from flask import Flask
 from redis import Redis, RedisError

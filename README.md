@@ -325,10 +325,10 @@ public interface PaymentService {
 ```
 
 - 동기식 호출에서는 호출 시간에 따른 타임 커플링이 발생하며, 결제 시스템이 장애가 나면 주문도 못받는다는 것을 확인하였다.
-```
+
 1. 결제 (pay) 서비스를 잠시 중지한 경우 : Fail
 
-![image](https://user-images.githubusercontent.com/13111333/209922057-a586d154-bf1d-4303-af66-ee4770f4ea85.png)
+![image](https://user-images.githubusercontent.com/13111333/209922103-a527c390-f5b1-47de-9a9a-9884856253b9.png)
 
 2. 결재 (pay) 서비스를 실행한 경우 : Success
 # 주문내역 (order) 생성됨
@@ -338,7 +338,7 @@ public interface PaymentService {
 ![image](https://user-images.githubusercontent.com/13111333/209919576-60b90170-5eb7-4d0e-a68c-3fc537e3b779.png)
 
 
-```
+
 
 ## CQRS-적용
 

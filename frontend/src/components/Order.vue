@@ -10,14 +10,13 @@
         </template>
 
         <v-card-title v-if="value._links">
-            OrderManagement # {{value._links.self.href.split("/")[value._links.self.href.split("/").length - 1]}}
+            Order # {{value._links.self.href.split("/")[value._links.self.href.split("/").length - 1]}}
         </v-card-title >
         <v-card-title v-else>
-            OrderManagement
+            Order
         </v-card-title >
 
         <v-card-text>
-            <Number label="OrderNo" v-model="value.orderNo" :editMode="editMode"/>
             <String label="CustomerId" v-model="value.customerId" :editMode="editMode"/>
             <Number label="ItemNo" v-model="value.itemNo" :editMode="editMode"/>
             <Number label="Qty" v-model="value.qty" :editMode="editMode"/>
@@ -97,7 +96,7 @@
 
 
     export default {
-        name: 'OrderManagement',
+        name: 'Order',
         components:{
         },
         props: {
@@ -149,7 +148,7 @@
 
                     if(!this.offline) {
                         if(this.isNew) {
-                            temp = await axios.post(axios.fixUrl('/orderManagements'), this.value)
+                            temp = await axios.post(axios.fixUrl('/orders'), this.value)
                         } else {
                             temp = await axios.put(axios.fixUrl(this.value._links.self.href), this.value)
                         }

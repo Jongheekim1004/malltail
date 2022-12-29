@@ -17,7 +17,7 @@ import malltail.domain.*;
 @Service
 @Transactional
 public class PolicyHandler{
-    @Autowired OrderManagementRepository orderManagementRepository;
+    @Autowired OrderRepository orderRepository;
     
     @StreamListener(KafkaProcessor.INPUT)
     public void whatever(@Payload String eventString){}

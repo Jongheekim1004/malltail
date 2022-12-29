@@ -11,7 +11,6 @@ import lombok.*;
 public class OrderCanceled extends AbstractEvent {
 
     private Long id;
-    private Long orderNo;
     private Long itemNo;
     private Long qty;
     private Date createDate;
@@ -22,9 +21,8 @@ public class OrderCanceled extends AbstractEvent {
     private String customerAddress;
     private String customerName;
     private String phoneNumber;
-    private Date updateDate;
 
-    public OrderCanceled(OrderManagement aggregate){
+    public OrderCanceled(Order aggregate){
         super(aggregate);
     }
     public OrderCanceled(){

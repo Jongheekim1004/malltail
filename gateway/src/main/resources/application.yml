@@ -11,7 +11,7 @@ spring:
         - id: order
           uri: http://localhost:8081
           predicates:
-            - Path=/orderManagements/**, 
+            - Path=/orders/**, 
         - id: pay
           uri: http://localhost:8082
           predicates:
@@ -58,7 +58,7 @@ spring:
         - id: order
           uri: http://order:8080
           predicates:
-            - Path=/orderManagements/**, 
+            - Path=/orders/**, 
         - id: pay
           uri: http://pay:8080
           predicates:

@@ -1,13 +1,10 @@
 <template>
     <v-card outlined>
         <v-card-title>
-            OrderManagement # {{item._links.self.href.split("/")[item._links.self.href.split("/").length - 1]}}
+            Order # {{item._links.self.href.split("/")[item._links.self.href.split("/").length - 1]}}
         </v-card-title>
 
         <v-card-text>
-            <div>
-                <Number label="OrderNo" v-model="item.orderNo" :editMode="editMode" @change="change" />
-            </div>
             <div>
                 <String label="CustomerId" v-model="item.customerId" :editMode="editMode" @change="change" />
             </div>
@@ -84,7 +81,7 @@
     const axios = require('axios').default;
 
     export default {
-        name: 'OrderManagementDetail',
+        name: 'OrderDetail',
         components:{},
         props: {
         },
@@ -95,7 +92,7 @@
         async created() {
             var me = this;
             var params = this.$route.params;
-            var temp = await axios.get(axios.fixUrl('/orderManagements/' + params.id))
+            var temp = await axios.get(axios.fixUrl('/orders/' + params.id))
             if(temp.data) {
                 me.item = temp.data
             }

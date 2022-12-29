@@ -39,13 +39,13 @@
 
                     <v-list-item
                         class="px-2"
-                        key="orderManagements"
-                        to="/orderManagements"
+                        key="orders"
+                        to="/orders"
                         @click="changeUrl()"
                         color="deep-purple lighten-2"
                         style="font-weight:700;"
                     >
-                        OrderManagement
+                        Order
                     </v-list-item>
 
 
@@ -146,16 +146,16 @@
                                             class="mx-auto"
                                             outlined
                                             rounded
-                                            key="orderManagements"
-                                            to="/orderManagements"
+                                            key="orders"
+                                            to="/orders"
                                             @click="changeUrl()"
                                             color="deep-purple lighten-2"
                                             style="font-weight:500; font-size:20px; padding:15px; border:solid 2px; max-width:250px; overflow:hidden"
                                         >
-                                            OrderManagement
+                                            Order
                                         </v-btn>
                                     </template>
-                                    <span>OrderManagement</span>
+                                    <span>Order</span>
                                 </v-tooltip>
                             </v-card-actions>
                         </v-card>

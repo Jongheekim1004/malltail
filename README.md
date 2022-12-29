@@ -266,6 +266,13 @@ http localhost:8081/orders/1
 
 ```
 
+## Sage-적용
+
+
+## CQRS-적용
+
+## Correlation-적용
+
 
 ## 폴리글랏 퍼시스턴스
 

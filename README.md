@@ -284,8 +284,7 @@ http localhost:8081/orders/1
 ## Saga-적용
 
 주문, 결제, 샵관리, delivery, shipping으로 서비스를 분리하여 타 서비스의 처리 여부와는 상관없이 각 서비스의 요청 처리만을 완료처리하고
-각 요청 정보를 pub/sub으로 공유함으로써 장애간섭최소화를 달성하고 Loosely coupled architecture를 구현한다.
-
+각 요청 정보를 Kafka를 이용하여 pub/sub으로 공유함으로써 장애간섭최소화를 달성하고 Loosely coupled architecture를 구현한다.
 
 ## CQRS-적용
 

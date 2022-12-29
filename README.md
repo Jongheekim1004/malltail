@@ -275,7 +275,7 @@ http localhost:8081/orders/1
 고객(Customer)의 주문 상태/배송/결재 정보에 대한 Status를 조회할 수 있도록 CQRS로 구현하였다.
 - order, payment, shop, delivery, shipping 개별 Aggregate Status를 통합 조회하여 성능 Issue를 사전에 예방할 수 있다. 
 - 비동기식으로 처리되어 발생된 이벤트 기반 Kafka를 통해 수신 처리되어 별도 Table에 관리한다.
-- Table 모델링(
+- Table 모델링(statusView)
 
 
 ## Correlation-적용

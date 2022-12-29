@@ -1,6 +1,6 @@
 ![image](https://user-images.githubusercontent.com/117339609/209891871-f1556010-1727-4df7-b8eb-1651e1be3707.png)
 
-# 몰테일 - 해외배송시스템
+# 몰테일 - 해외직구사이트
 
 # Table of contents
 

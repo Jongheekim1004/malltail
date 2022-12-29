@@ -164,8 +164,6 @@
        - 결제가 완료되면(OrderPaid) Shop에 주문된 상품을 업데이트한다(orderinfoUpdate)
        - 상점 주인이 상품 주문을 진행하면(OrderDeliveryStarted) 해외배송이 시작된다(start shipping)
        - 해외배송이 완료되면(ShippingCompleted) 통관절차 리스트에 추가된다(add to customs list)
-    - cancelAvailableCheck - Circuit Breaker/Fallback
-       - 해외배송이 시작되면(shipping) 주문을 취소할 수 없다(order cancel)
        
        
 ### 완성된 모형

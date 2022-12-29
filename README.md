@@ -125,7 +125,8 @@
 ### 어그리게잇으로 묶기
 ![image](https://user-images.githubusercontent.com/117131393/209906610-0c425aa3-bd65-4156-b047-b22d13fe0e4d.JPG)
 
-    - app의 Order, store 의 주문처리, 결제의 결제이력은 그와 연결된 command 와 event 들에 의하여 트랜잭션이 유지되어야 하는 단위로 그들 끼리 묶어줌
+    - Order, Shop의 주문 및 배송처리, 결제, 해외배송(shipping), 국내배송(delivery)으로 역할을 나눈다 
+      이 다섯가지 범위 내에서 각각의 command와 event들이 트랜잭션을 유지해야 한다
 
 ### 바운디드 컨텍스트로 묶기
 

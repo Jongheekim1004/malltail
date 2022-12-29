@@ -133,11 +133,11 @@
 ![image](https://user-images.githubusercontent.com/117131393/209908342-9b45f146-51e8-4f56-a87f-38eac6c84cfc.JPG)
 
     - 도메인 서열 분리 
-       1. Core Domain(order, shop)  
+       1. Core Domain - order, shop  
           핵심 서비스이며, Up-time SLA 수준을 99.999% 목표, 배포주기는 1주일 1회 미만
-       2. Supporting Domain(shipping, delivery)
+       2. Supporting Domain - shipping, delivery
           경쟁력을 내기 위한 서비스이며, SLA 수준은 연간 60% 이상 uptime 목표, 배포주기는 1주일 1회 이상을 기준으로 함.
-       3. General Domain(pay) 
+       3. General Domain - pay
           결제서비스로 3rd Party 외부 서비스를 사용하는 것이 경쟁력이 높음
     - View Model 추가
          - 고객이 주문상태를 중간 중간 조회하기 위한 페이지는 view 모델로 생성한다

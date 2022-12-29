@@ -119,7 +119,7 @@
 
     - 과정 중 도출된 잘못된 도메인 이벤트들을 걸러내는 작업을 수행한다
         1. 상품을 선택(ProductSeleted)하는 이벤트는 오더 처리에 포함되므로 제외
-        2. 명칭은 다르지만 기능이 중복된 이벤트를 제외 (deliverytoDomastic, DeliveryStarted)
+        2. 명칭은 다르지만 기능이 중복된 이벤트를 제외 (deliverytoDomastic가 DeliveryStarted와 중복됨)
         3. view로 구현되어야 하는 기능 제외 (kakaoNotification, Notified)
 
 ### 액터, 커맨드 부착하여 읽기 좋게

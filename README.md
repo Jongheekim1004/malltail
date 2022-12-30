@@ -14,7 +14,7 @@
     - [CQRS 의 적용](#cqrs-적용)
     - [Correlation 의 적용](#ddd-의-적용)     
     - [Request/Response 의 적용](#ddd-의-적용)         
-    - [Polyglot persistence / programming](#폴리글랏-퍼시스턴스-및-프로그래밍)
+    - [Polyglot persistence / programming](#폴리글랏-퍼시스턴스-및-프로그래밍-(Persistence Volume))
     - [동기식 호출 과 Fallback 처리](#동기식-호출-과-Fallback-처리)  
     - [비동기식 호출 과 Eventual Consistency](#비동기식-호출-과-Eventual-Consistency)
   - [운영](#운영)
@@ -378,12 +378,97 @@ public class PolicyHandler{
     }
 ```
 
-## 폴리글랏 퍼시스턴스 및 프로그래밍
+## 폴리글랏 퍼시스턴스 및 프로그래밍 (Persistence Volume)
 
-- 현재 구현중인 몰테일은 실사용을 위한 사이트로 오픈하기 전에 데모버전의 테스트성 사이트로 그에 적합한 인메모리 DB인 H2를 사용하여 필요한 DB의 기능을 활용하였다.
+- 현재 구현중인 몰테일은 실사용을 위한 사이트로 오픈하기 전에 데모버전의 테스트성 사이트로 그에 적합한 인메모리 DB인 H2를 사용하여 필요한 DB의 기능을 활용하였고,
+- 상점(shop) 서비스의 경우에는 상품의 재고량 파악 및 정보 영구저장을 위해 Persistence Volume인 mySql DB를 적용하였다.
 - 몰테일은 order, payment, shop, delivery, shipping 별 독립적인 서비스를 java로 구현하고 배포하였다.
 - 서비스 간 처리되는 order-shop, shop-shipping, shipping-delivery 이벤트는 Kafka를 이용하여 비동기식으로 동작한다.
 
+- 상점(shop) 서비스에 mysql 사용을 위한 라이브러리 추가 및 data 설정
+```
+<pom.xml>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>	
+```
+```
+<application.yml>
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL57Dialect
+  datasource:
+    url: jdbc:mysql://${_DATASOURCE_ADDRESS:10.100.49.58:3306}/${_DATASOURCE_TABLESPACE:shop_management}
+    username: ${_DATASOURCE_USERNAME:root}
+    password: ${_DATASOURCE_PASSWORD:mysql123}
+    driverClassName: com.mysql.cj.jdbc.Driver
+```
+
+- mySql 서비스와 Deployment 생성하였고, 접속 비밀번호는 보안이 중요한 데이터이므로 Secret으로 설정하여 사용하였다.
+
+![image](https://user-images.githubusercontent.com/13111333/210038488-fff57444-e5d0-45bf-a293-ae97d741c571.png)
+
+![image](https://user-images.githubusercontent.com/13111333/210038935-dc540c33-701d-4347-bc5e-2ebbc213c573.png)
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql
+  labels:
+    name: lbl-k8s-mysql
+spec:
+  containers:
+  - name: mysql
+    image: mysql:latest
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysql-pass
+          key: password
+    ports:
+    - name: mysql
+      containerPort: 3306
+      protocol: TCP
+    volumeMounts:
+    - name: k8s-mysql-storage
+      mountPath: /var/lib/mysql
+  volumes:
+  - name: k8s-mysql-storage
+    emptyDir: {}
+```
+
+- 주문완료 후 상점에 생성된 데이터 조회
+```
+kubectl exec mysql -it -- bash
+
+mysql> select id, orderNo, deliveryStatus from ShopManagement_table;
++----+---------+----------------+
+| id | orderNo | deliveryStatus |
++----+---------+----------------+
+|  1 |       1 | Ready          |
+|  2 |       2 | Ready          |
+|  3 |       3 | Ready          |
+|  4 |       4 | Ready          |
+|  5 |       5 | Ready          |
+|  6 |      11 | Ready          |
+|  7 |       9 | Ready          |
+|  8 |       7 | Ready          |
+|  9 |      15 | Ready          |
+| 10 |      14 | Ready          |
++----+---------+----------------+
+10 rows in set (0.00 sec)
+```
 
 ## 동기식 호출 과 Fallback 처리
 

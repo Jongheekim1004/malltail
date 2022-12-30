@@ -841,7 +841,7 @@ order 서비스의 deployment.yaml 파일에 아래와 같이 livenessProbe 설�
             periodSeconds: 5
             failureThreshold: 5
 
-
+```
 gitpod /workspace/malltail/order/kubernetes (feature) $ kubectl get pod
 NAME                        READY   STATUS             RESTARTS   AGE
 gateway-7f95bf4c7-bpx9f     1/1     Running            0          155m
@@ -852,7 +852,7 @@ my-kafka-zookeeper-0        1/1     Running            0          152m
 mysql                       1/1     Running            0          118m
 order-58d7ddd647-ptfjg      2/2     Running            1          4m35s   <<- restart 된것을 확인함
 
-
+```
 ## 무정지 재배포
 
 * 먼저 무정지 재배포가 100% 되는 것인지 확인하기 위해서 Autoscaler 이나 CB 설정을 제거함
@@ -912,7 +912,7 @@ kubectl apply -f kubernetes/deployment.yaml
 
 - 동일한 시나리오로 재배포 한 후 Availability 확인:
 
-
+```
 Lifting the server siege...
 Transactions:                  11782 hits
 Availability:                 100.00 %
@@ -927,7 +927,7 @@ Failed transactions:               0
 Longest transaction:            0.29
 Shortest transaction:           0.00
 
-
+```
 
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.

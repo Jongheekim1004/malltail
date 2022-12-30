@@ -27,15 +27,18 @@
 
 기능적 요구사항
 1. 고객이 상품을 선택하여 주문한다
-1. 고객이 결제한다
-1. 결제가 되면 주문 내역이 상점주인에게 전달된다
-1. 상점주인이 확인하여 물건을 주문하면 물건이 등록한 배대지로 출발한다 (해외배송)
-1. 고객이 주문을 취소할 수 있다 (단, 취소 가능한 주문은 배송이 시작되지 않아야 가능하다) -- 수정 필요함 6번 항목과 충돌
-1. 주문이 취소되면 배송이 취소된다
-1. 배송이 시작되면 주문취소는 불가하다
-1. 배대지에 상품 도착 시 한국 주소로 출발한다
-1. 통관 절차가 승인되면 국내 배송이 진행된다 (국내배송) -- 통관 승인 거절시 주문 취소 상태 처리 관련 확인 필요
-1. 고객이 주문상태를 중간 중간 조회할 수 있다
+2. 주문된 상품이 결제된다
+3. 결제가 되면 주문 내역이 상점주인에게 전달된다
+4. 상점주인이 확인하여 상품을 배송가능여부에 따라 주문을 수락 또는 거절한다
+5. 주문이 수락되면, 상품이 등록한 배대지로 출발한다 (해외배송)
+6. 고객이 주문을 취소할 수 있다
+8. 주문한 상품이 이미 배대지 배송이 시작된 경우에는 취소할 수 없다
+9. 주문이 취소되면 결제가 취소되고, 상점주인이 취소된 상품내역을 확인할수 있다
+10. 배대지에 상품 도착 시 한국 주소로 출발한다
+11. 통관담당자는 상품의 통관을 승인하거나 거절할 수 있다
+12. 통관 절차가 승인되면 국내 배송이 진행된다 (국내배송)
+13. 통관 절차가 거절되면 고객과실로 판단되어 상품은 폐기되며, 주문내역이 취소된다
+14. 고객이 주문상태를 중간 중간 조회할 수 있다
 
 비기능적 요구사항
 1. 트랜잭션
@@ -43,9 +46,9 @@
 1. 장애격리
     1. 상점관리 기능이 수행되지 않더라도 주문은 365일 24시간 받을 수 있어야 한다 - Async (event-driven), Eventual Consistency
     1. 해외배송, 국내배송 기능이 수행되지 않더라도 주문은 365일 24시간 받을 수 있어야 한다 - Async (event-driven), Eventual Consistency
-    1. shipping 처리 지연시 주문취소를  잠시 후에 하도록 유도한다 - Circuit breaker, fallback
+    1. 주문요청이 과도하여, 결제 처리가 지연되는 경우 결제를 잠시후에 하도록 유도한다  - Circuit breaker, fallback
 1. 성능
-    1. 고객이 주문한 상품의 배송 상태를 주문시스템(프론트엔드)에서 확인할 수 있어야 한다 - CQRS
+    1. 고객이 주문한 상품의 주문/배송/결제 정보에 대한 상태를 조회시스템(프론트엔드)에서 확인할 수 있어야 한다 - CQRS
 
 
 # 체크포인트
@@ -296,7 +299,7 @@ http localhost:8086/statusViews
 
 ## CQRS
 
-고객(Customer)의 주문 상태/배송/결재 정보에 대한 Status를 조회할 수 있도록 CQRS로 구현하였다.
+고객(Customer)의 주문 상태/배송/결제 정보에 대한 Status를 조회할 수 있도록 CQRS로 구현하였다.
 - order, payment, shop, delivery, shipping 개별 Aggregate Status를 통합 조회하여 성능 Issue를 사전에 예방할 수 있다. 
 - 비동기식으로 처리되어 발생된 이벤트 기반 Kafka를 통해 수신 처리되어 별도 Table에 관리한다.
 - Table 모델링(statusView)
@@ -311,7 +314,7 @@ http localhost:8086/statusViews
 
 ## Correlation
 
-고객이 주문취소(cancel) 요청을 했을 경우, 결재 완료된 요청건에 대해 주문상태가 취소로 변경되었음을 확인하고 결재 취소 처리를 한다. 만약 이미 배대지배송(shipping)이 진행중인 주문건이면, 주문취소(cancel)을 할 수 없도록 동기식 구현을 적용하였다.
+고객이 주문취소(cancel) 요청을 했을 경우, 결제 완료된 요청건에 대해 주문상태가 취소로 변경되었음을 확인하고 결제제 취소 처리를 한다. 만약 이미 배대지배송(shipping)이 진행중인 주문건이면, 주문취소(cancel)을 할 수 없도록 동기식 구현을 적용하였다.
 
 - 주문이 취소되는 시점에 ShippingService를 조회하여 그 조건에 따라 분기처리하였다. 주문취소가 정상적으로 동작하는 경우에는 주문상태(orderStatus)를 "Canceled"로 변경한다.
 ```
@@ -337,7 +340,7 @@ http localhost:8086/statusViews
     }
 ```
 
-- 결재 (pay)의 PolicyHandler에 주문이 취소될때의 호출되는 함수 wheneverOrderCanceled_CancelPayment를 구현한다.
+- 결제제 (pay)의 PolicyHandler에 주문이 취소될때의 호출되는 함수 wheneverOrderCanceled_CancelPayment를 구현한다.
 ```
 @Service
 @Transactional
@@ -361,7 +364,7 @@ public class PolicyHandler{
 
 ```
 
-- 주문취소(cancel) 시 결재 (pay) 정보를 업데이트 한다. 
+- 주문취소(cancel) 시 결제(pay) 정보를 업데이트 한다. 
 ```
     public static void cancelPayment(OrderCanceled orderCanceled){
 
@@ -384,7 +387,7 @@ public class PolicyHandler{
 
 ## 동기식 호출 과 Fallback 처리
 
-분석단계에서의 조건 중 하나로 주문(order)와 결재(pay) 간의 호출은 동기식 일관성을 유지하는 트랙잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다.
+분석단계에서의 조건 중 하나로 주문(order)와 제제(pay) 간의 호출은 동기식 일관성을 유지하는 트랙잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다.
 
 - 결제서비스를 호출하기 위하여 Stub과 (FeignClient) 를 이용하여 Service 대행 인터페이스 (Proxy) 를 구현
 ```
@@ -395,7 +398,7 @@ public interface PaymentService {
 }
 ```
 
-- 주문이 완료되는 시점에(@onPostPersist), 필요한 값을 설정하여 결재를 처리한다.
+- 주문이 완료되는 시점에(@onPostPersist), 필요한 값을 설정하여 결제제를 처리한다.
 ```
     @PostPersist
     public void onPostPersist(){
@@ -427,23 +430,23 @@ public interface PaymentService {
 ![image](https://user-images.githubusercontent.com/13111333/209922103-a527c390-f5b1-47de-9a9a-9884856253b9.png)
 
 
-2. 결재 (pay) 서비스를 실행한 경우 : Success
+2. 결제 (pay) 서비스를 실행한 경우 : Success
 
 - 주문내역 (order) 생성됨
 
 ![image](https://user-images.githubusercontent.com/13111333/209922597-941e8518-e62a-4bac-9389-396e656ef4c8.png)
 
-- 결재 (pay) 생성됨
+- 결제 (pay) 생성됨
 
 ![image](https://user-images.githubusercontent.com/13111333/209922652-539e4f0b-9584-46fc-9432-f79b3e104d69.png)
 
 
 ## 비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트
 
-주문(order)과 결재(pay)가 모두 완료되면, 해외직구를 대행하는 상점(shop)인 몰테일에 이를 알려주는 행위를 비동기식으로 처리하여, 
-상점(shop) 시스템의 처리를 위하여 주문과 결재가 블로킹되지 않도록 처리한다.
+주문(order)과 결제(pay)가 모두 완료되면, 해외직구를 대행하는 상점(shop)인 몰테일에 이를 알려주는 행위를 비동기식으로 처리하여, 
+상점(shop) 시스템의 처리를 위하여 주문과 결제가 블로킹되지 않도록 처리한다.
 
-- 결재가 완료되면, 주문이 정상적으로 처리되었다는 이벤트를 Kafka로 송출하고 (Publish),
+- 결제제가 완료되면, 주문이 정상적으로 처리되었다는 이벤트를 Kafka로 송출하고 (Publish),
   이를 상점(shop)의 PolicyHandler를 통해 수신하도록 (Subscribe) 구현하였다.
 ```
     @StreamListener(value=KafkaProcessor.INPUT, condition="headers['type']=='OrderPaid'")
@@ -473,7 +476,7 @@ public interface PaymentService {
 
 - 이와같이 구현한 비동기식 호출에서는 상점(shop) 시스템에 장애나 지연이 발생하여도, 주문/결제와 완전히 분리되어있으므로 정상적으로 동작한다.
 
-- 상점(shop) 서비스를 잠시 중지 후 신규 주문(order) 요청 시, 주문(order)과 결재(pay) 정상수행됨
+- 상점(shop) 서비스를 잠시 중지 후 신규 주문(order) 요청 시, 주문(order)과 결제제(pay) 정상수행됨
 http :8081/orders itemNo=2001
 
 ![image](https://user-images.githubusercontent.com/13111333/209934079-122ccbfc-e0f0-4482-9ef9-092fb1e0713e.png)
@@ -498,9 +501,16 @@ http :8081/orders itemNo=2001
 https://labs.msaez.io/#/courses/cna-full/32c3e5c0-7cd9-11ed-b37b-0b0e73d05d98/#ops-service-mesh-istio
 https://labs.msaez.io/#/courses/cna-full/32c3e5c0-7cd9-11ed-b37b-0b0e73d05d98/#ops-service-mesh-istio-2
 
-Istio를 설치하여 주문 요청이 과도할 경우 Envoy 사이드카를 생성하는 pod들에 자동적으로 주입하여 서킷 브레이킹 기능이 동작하도록 구현함
-시나리오는 주문요청완료 -->결재로의 연결을 RESTful Request/Response 로 연동하여 구현이 되어있고, 주문 요청이 과도할 경우 결재서비스의 CB 를 통하여 장애격리.
+- Istio를 설치하여 주문 요청이 과도할 경우 Envoy 사이드카를 생성하는 pod들에 자동적으로 주입하여 서킷 브레이킹 기능이 동작하도록 구현함
+- 시나리오는 주문요청완료되면 동기화되어 결재로 연결(RESTful Request/Response 방식)되어 처리되도록 구현되어 있고, 주문 요청이 과도할 경우 결재서비스의 CB를 통하여 장애격리.
+- 통합 모니터링 툴을 이용하여 서비스들의 이상 현상들을 모니터링하도록 함
+
+$ kubectl label namespace default istio-injection=enabled
+$ kubectl apply -f Deployment.yml -n default
+
 --> 아랫쪽의 코드 부분은 수정 필요!!!
+--> 아랫쪽의 코드 부분은 수정 필요!!!
+
 
 - Hystrix 를 설정:  요청처리 쓰레드에서 처리시간이 610 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
 ```

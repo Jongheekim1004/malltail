@@ -998,7 +998,7 @@ Transaction rate:             198.85 trans/sec
 Throughput:                     0.06 MB/sec
 Concurrency:                    1.32
 Successful transactions:       10368
-Failed transactions:               0
+Failed transactions:            1413
 Longest transaction:            0.29
 Shortest transaction:           0.00
 

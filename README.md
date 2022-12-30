@@ -515,7 +515,7 @@ $ kubectl apply -f Deployment.yml -n default
 ![image](https://user-images.githubusercontent.com/117247400/210026883-4658b4a8-3f23-4f59-a849-dab95dbf98a8.png)
 
 - [통합모니터링툴 설치]
-- 
+ 
 ![image](https://user-images.githubusercontent.com/117247400/210026926-4b5d20dd-8ac5-454e-8858-20935d340b4b.png)
 
 

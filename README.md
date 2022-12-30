@@ -792,17 +792,21 @@ kubectl apply -f kubernetes/deployment.yaml
 ```
 
 - 동일한 시나리오로 재배포 한 후 Availability 확인:
-```
-Transactions:		        3078 hits
-Availability:		       100 %
-Elapsed time:		       120 secs
-Data transferred:	        0.34 MB
-Response time:		        5.60 secs
-Transaction rate:	       17.15 trans/sec
-Throughput:		        0.01 MB/sec
-Concurrency:		       96.02
 
-```
+
+Lifting the server siege...
+Transactions:                     39 hits
+Availability:                 100.00 %
+Elapsed time:                   2.10 secs
+Data transferred:               0.11 MB
+Response time:                  0.04 secs
+Transaction rate:              18.57 trans/sec
+Throughput:                     0.05 MB/sec
+Concurrency:                    0.79
+Successful transactions:          39
+Failed transactions:               0
+Longest transaction:            0.20
+Shortest transaction:           0.01
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
 

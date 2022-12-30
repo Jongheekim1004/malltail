@@ -717,6 +717,13 @@ Shortest transaction:	        0.00
 ```
 - 운영시스템은 죽지 않고 지속적으로 CB 에 의하여 적절히 회로가 열림과 닫힘이 벌어지면서 자원을 보호하고 있음을 보여줌. 하지만, 63.55% 가 성공하였고, 46%가 실패했다는 것은 고객 사용성에 있어 좋지 않기 때문에 Retry 설정과 동적 Scale out (replica의 자동적 추가,HPA) 을 통하여 시스템을 확장 해주는 후속처리가 필요.
 
+
+- 모니터링 툴을 이용하여 서비스들의 상태 추적 (kiali)
+http://af831838952b14d99a6a49f7d91a4034-1469197019.eu-west-3.elb.amazonaws.com:20001/kiali/console/graph/namespaces/?traffic=grpc%2CgrpcRequest%2Chttp%2ChttpRequest%2Ctcp%2CtcpSent&graphType=versionedApp&duration=1800&refresh=900000&namespaces=istio-system%2Cdefault&idleNodes=true&layout=kiali-dagre&namespaceLayout=kiali-dagre&graphHide=healthy&edges=trafficDistribution%2Cthroughput%2CthroughputRequest%2CresponseTime%2Crt95&idleEdges=true&operationNodes=true&rank=true
+
+![image](https://user-images.githubusercontent.com/117247400/210038289-7a222948-161d-4ea7-97f7-c73d7e419d87.png)
+
+
 - Retry 의 설정 (istio)
 - Availability 가 높아진 것을 확인 (siege)
 

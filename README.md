@@ -14,7 +14,7 @@
     - [CQRS 의 적용](#cqrs-적용)
     - [Correlation 의 적용](#ddd-의-적용)     
     - [Request/Response 의 적용](#ddd-의-적용)         
-    - [Polyglot persistence / programming](#폴리글랏-퍼시스턴스-및-프로그래밍-(Persistence Volume))
+    - [폴리글랏-퍼시스턴스-및-프로그래밍-(Persistence Volume)](#폴리글랏-퍼시스턴스-및-프로그래밍-(Persistence Volume))
     - [동기식 호출 과 Fallback 처리](#동기식-호출-과-Fallback-처리)  
     - [비동기식 호출 과 Eventual Consistency](#비동기식-호출-과-Eventual-Consistency)
   - [운영](#운영)
@@ -314,7 +314,7 @@ http localhost:8086/statusViews
 
 ## Correlation
 
-고객이 주문취소(cancel) 요청을 했을 경우, 결제 완료된 요청건에 대해 주문상태가 취소로 변경되었음을 확인하고 결제제 취소 처리를 한다. 만약 이미 배대지배송(shipping)이 진행중인 주문건이면, 주문취소(cancel)을 할 수 없도록 동기식 구현을 적용하였다.
+고객이 주문취소(cancel) 요청을 했을 경우, 결제 완료된 요청건에 대해 주문상태가 취소로 변경되었음을 확인하고 결제 취소 처리를 한다. 만약 이미 배대지배송(shipping)이 진행중인 주문건이면, 주문취소(cancel)을 할 수 없도록 동기식 구현을 적용하였다.
 
 - 주문이 취소되는 시점에 ShippingService를 조회하여 그 조건에 따라 분기처리하였다. 주문취소가 정상적으로 동작하는 경우에는 주문상태(orderStatus)를 "Canceled"로 변경한다.
 ```
@@ -340,7 +340,7 @@ http localhost:8086/statusViews
     }
 ```
 
-- 결제제 (pay)의 PolicyHandler에 주문이 취소될때의 호출되는 함수 wheneverOrderCanceled_CancelPayment를 구현한다.
+- 결제 (pay)의 PolicyHandler에 주문이 취소될때의 호출되는 함수 wheneverOrderCanceled_CancelPayment를 구현한다.
 ```
 @Service
 @Transactional
@@ -472,7 +472,7 @@ mysql> select id, orderNo, deliveryStatus from ShopManagement_table;
 
 ## 동기식 호출 과 Fallback 처리
 
-분석단계에서의 조건 중 하나로 주문(order)와 제제(pay) 간의 호출은 동기식 일관성을 유지하는 트랙잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다.
+분석단계에서의 조건 중 하나로 주문(order)와 결제(pay) 간의 호출은 동기식 일관성을 유지하는 트랙잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다.
 
 - 결제서비스를 호출하기 위하여 Stub과 (FeignClient) 를 이용하여 Service 대행 인터페이스 (Proxy) 를 구현
 ```
@@ -483,7 +483,7 @@ public interface PaymentService {
 }
 ```
 
-- 주문이 완료되는 시점에(@onPostPersist), 필요한 값을 설정하여 결제제를 처리한다.
+- 주문이 완료되는 시점에(@onPostPersist), 필요한 값을 설정하여 결제를 처리한다.
 ```
     @PostPersist
     public void onPostPersist(){
@@ -531,7 +531,7 @@ public interface PaymentService {
 주문(order)과 결제(pay)가 모두 완료되면, 해외직구를 대행하는 상점(shop)인 몰테일에 이를 알려주는 행위를 비동기식으로 처리하여, 
 상점(shop) 시스템의 처리를 위하여 주문과 결제가 블로킹되지 않도록 처리한다.
 
-- 결제제가 완료되면, 주문이 정상적으로 처리되었다는 이벤트를 Kafka로 송출하고 (Publish),
+- 결제가 완료되면, 주문이 정상적으로 처리되었다는 이벤트를 Kafka로 송출하고 (Publish),
   이를 상점(shop)의 PolicyHandler를 통해 수신하도록 (Subscribe) 구현하였다.
 ```
     @StreamListener(value=KafkaProcessor.INPUT, condition="headers['type']=='OrderPaid'")
@@ -561,7 +561,7 @@ public interface PaymentService {
 
 - 이와같이 구현한 비동기식 호출에서는 상점(shop) 시스템에 장애나 지연이 발생하여도, 주문/결제와 완전히 분리되어있으므로 정상적으로 동작한다.
 
-- 상점(shop) 서비스를 잠시 중지 후 신규 주문(order) 요청 시, 주문(order)과 결제제(pay) 정상수행됨
+- 상점(shop) 서비스를 잠시 중지 후 신규 주문(order) 요청 시, 주문(order)과 결제(pay) 정상수행됨
 http :8081/orders itemNo=2001
 
 ![image](https://user-images.githubusercontent.com/13111333/209934079-122ccbfc-e0f0-4482-9ef9-092fb1e0713e.png)
@@ -664,7 +664,7 @@ viewpage                      ClusterIP      10.100.70.172    <none>            
 
 
 
-- Hystrix 를 설정:  요청처리 쓰레드에서 처리시간이 610 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
+- Hystrix 를 설정:  요청처리 쓰레드에서 처리시간이 500 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
 ```
 # application.yml
 
@@ -684,7 +684,7 @@ hystrix:
 # Payment.java (Entity)
 
     @PrePersist
-    public void onPrePersist(){  //결제이력을 저장한 후 적당한 시간 끌기
+    public void onPrePersist(){  // 적당한 시간 끌기
 
         ...
         

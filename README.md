@@ -733,7 +733,7 @@ Shortest transaction:	        0.00
 ![image](https://user-images.githubusercontent.com/117131393/210037802-56bf434f-6529-4afd-ac6f-da76d06a264e.png)
 
 - siege 의 로그를 보아도 전체적인 성공률이 높아진 것을 확인 할 수 있다. 
-![image](https://user-images.githubusercontent.com/117131393/210038081-1ef9f303-4583-4075-bc0d-772bd2cebe5d.png)
+![image](https://user-images.githubusercontent.com/117131393/210038141-cfae076c-9556-4a8c-af61-67b3a6de9909.png)
 
 
 ## 무정지 재배포

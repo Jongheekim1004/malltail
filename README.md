@@ -499,7 +499,9 @@ https://labs.msaez.io/#/courses/cna-full/32c3e5c0-7cd9-11ed-b37b-0b0e73d05d98/#o
 https://labs.msaez.io/#/courses/cna-full/32c3e5c0-7cd9-11ed-b37b-0b0e73d05d98/#ops-service-mesh-istio-2
 
 Istio를 설치하여 주문 요청이 과도할 경우 Envoy 사이드카를 생성하는 pod들에 자동적으로 주입하여 서킷 브레이킹 기능이 동작하도록 구현함
+
 시나리오는 주문요청완료 -->결재로의 연결을 RESTful Request/Response 로 연동하여 구현이 되어있고, 주문 요청이 과도할 경우 결재서비스의 CB 를 통하여 장애격리.
+
 통합 모니터링 툴을 이용하여 서비스들의 이상 현상들을 모니터링하도록 함
 
 $ kubectl label namespace default istio-injection=enabled

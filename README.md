@@ -494,7 +494,7 @@ http :8081/orders itemNo=2001
 - 서비스들을 구동시키는 명령어들 (추가하기!!!)
 
 
-## 동기식 호출 / 서킷 브레이킹 / 장애격리
+## 동기식 호출 / 서킷 브레이킹 / 장애격리 / 모니터링
 https://labs.msaez.io/#/courses/cna-full/32c3e5c0-7cd9-11ed-b37b-0b0e73d05d98/#ops-service-mesh-istio
 https://labs.msaez.io/#/courses/cna-full/32c3e5c0-7cd9-11ed-b37b-0b0e73d05d98/#ops-service-mesh-istio-2
 

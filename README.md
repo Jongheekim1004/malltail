@@ -575,13 +575,13 @@ HTTP/1.1 201     3.57 secs:     475 bytes ==> POST http://order:8080/orders
 
 * 요청이 과도하여 CB를 동작함 요청을 차단
 
-HTTP/1.1 500     1.29 secs:     248 bytes ==> POST http://localhost:8081/orders   
-HTTP/1.1 500     1.24 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     1.23 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     1.42 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     2.08 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.29 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     1.24 secs:     248 bytes ==> POST http://localhost:8081/orders
+HTTP/1.1 500     1.29 secs:     248 bytes ==> POST http://order:8080/orders
+HTTP/1.1 500     1.24 secs:     248 bytes ==> POST http://order:8080/orders
+HTTP/1.1 500     1.23 secs:     248 bytes ==> POST http://order:8080/orders
+HTTP/1.1 500     1.42 secs:     248 bytes ==> POST http://order:8080/orders
+HTTP/1.1 500     2.08 secs:     248 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     1.29 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 500     1.24 secs:     248 bytes ==> POST http://order:8080/orders
 
 * 요청을 어느정도 돌려보내고나니, 기존에 밀린 일들이 처리되었고, 회로를 닫아 요청을 다시 받기 시작
 
@@ -595,47 +595,47 @@ HTTP/1.1 201     4.02 secs:     475 bytes ==> POST http://order:8080/orders
 
 * 다시 요청이 쌓이기 시작하여 건당 처리시간이 610 밀리를 살짝 넘기기 시작 => 회로 열기 => 요청 실패처리
 
-HTTP/1.1 500     1.93 secs:     248 bytes ==> POST http://localhost:8081/orders    
-HTTP/1.1 500     1.92 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     1.93 secs:     248 bytes ==> POST http://localhost:8081/orders
+HTTP/1.1 500     1.93 secs:     248 bytes ==> POST http://order:8080/orders  
+HTTP/1.1 500     1.92 secs:     248 bytes ==> POST http://order:8080/orders
+HTTP/1.1 500     1.93 secs:     248 bytes ==> POST http://order:8080/orders
 
 * 생각보다 빨리 상태 호전됨 - (건당 (쓰레드당) 처리시간이 610 밀리 미만으로 회복) => 요청 수락
 
-HTTP/1.1 201     2.24 secs:     207 bytes ==> POST http://localhost:8081/orders  
-HTTP/1.1 201     2.32 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     2.16 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     2.19 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     2.19 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     2.19 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     2.21 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     2.29 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     2.30 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     2.38 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     2.59 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     2.61 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     2.62 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     2.64 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.01 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.27 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.33 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.45 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.52 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.57 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.69 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.70 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.69 secs:     207 bytes ==> POST http://localhost:8081/orders
+HTTP/1.1 201     2.24 secs:     207 bytes ==> POST http://order:8080/orders  
+HTTP/1.1 201     2.32 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     2.16 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     2.19 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     2.19 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     2.19 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     2.21 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     2.29 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     2.30 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     2.38 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     2.59 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     2.61 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     2.62 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     2.64 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.01 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.27 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.33 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.45 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.52 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.57 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.69 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.70 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.69 secs:     207 bytes ==> POST http://order:8080/orders
 
 * 이후 이러한 패턴이 계속 반복되면서 시스템은 도미노 현상이나 자원 소모의 폭주 없이 잘 운영됨
 
 
-HTTP/1.1 500     4.76 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     4.23 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.76 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.74 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     4.82 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.82 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.84 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.66 secs:     207 bytes ==> POST http://localhost:8081/orders
+HTTP/1.1 500     4.76 secs:     248 bytes ==> POST http://order:8080/orders
+HTTP/1.1 500     4.23 secs:     248 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.76 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.74 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 500     4.82 secs:     248 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.82 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.84 secs:     207 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.66 secs:     207 bytes ==> POST http://order:8080/orders
 
 
 :

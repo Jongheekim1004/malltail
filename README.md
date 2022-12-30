@@ -312,6 +312,124 @@ http localhost:8086/statusViews
 ![image](https://user-images.githubusercontent.com/13111333/209935374-2aaabe7a-0929-4b6e-90c2-fe141a493d2c.png)
 
 
+## API 게이트웨이
+
+gateway 스프링부트 App을 추가 후 application.yaml내에 각 마이크로 서비스의 routes 를 추가하고 gateway 서버의 포트를 8080 으로 설정함
+
+- application.yaml 예시
+```
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: order
+          uri: http://order:8080
+          predicates:
+            - Path=/orders/**, 
+        - id: pay
+          uri: http://pay:8080
+          predicates:
+            - Path=/payments/**, 
+        - id: shop
+          uri: http://shop:8080
+          predicates:
+            - Path=/shopManagements/**, 
+        - id: shipping
+          uri: http://shipping:8080
+          predicates:
+            - Path=/shippings/**, 
+        - id: delivery
+          uri: http://delivery:8080
+          predicates:
+            - Path=/deliveries/**, 
+        - id: viewPage
+          uri: http://viewPage:8080
+          predicates:
+            - Path=, /statusViews/**
+        - id: frontend
+          uri: http://frontend:8080
+          predicates:
+            - Path=/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
+```
+
+Kubernetes용 Deployment.yaml, service.yaml 작성
+
+- Deployment.yaml 예시
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  labels:
+    app: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: rktmaudtn/gateway:latest
+          ports:
+            - containerPort: 8080
+```
+
+
+- Service.yaml 예시
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+  labels:
+    app: gateway
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: gateway
+  type: LoadBalancer
+```
+
+API Gateway 엔드포인트 확인
+
+- 시스템 캡쳐
+```
+NAME                          TYPE           CLUSTER-IP       EXTERNAL-IP                                                               PORT(S)                      AGE
+gateway                       LoadBalancer   10.100.54.179    a3a5c914c8909446fa3847d0198dc212-1810891788.eu-west-3.elb.amazonaws.com   8080:31521/TCP               155m
+kubernetes                    ClusterIP      10.100.0.1       <none>                                                                    443/TCP                      178m
+my-kafka                      ClusterIP      10.100.1.49      <none>                                                                    9092/TCP                     153m
+my-kafka-headless             ClusterIP      None             <none>                                                                    9092/TCP,9093/TCP            153m
+my-kafka-zookeeper            ClusterIP      10.100.54.55     <none>                                                                    2181/TCP,2888/TCP,3888/TCP   153m
+my-kafka-zookeeper-headless   ClusterIP      None             <none>                                                                    2181/TCP,2888/TCP,3888/TCP   153m
+mysql                         ClusterIP      10.100.49.58     <none>                                                                    3306/TCP                     97m
+order                         ClusterIP      10.100.179.173   <none>                                                                    8080/TCP                     85m
+pay                           ClusterIP      10.100.90.93     <none>                                                                    8080/TCP                     115s
+shipping                      ClusterIP      10.100.27.206    <none>                                                                    8080/TCP                     84m
+shop                          ClusterIP      10.100.144.162   <none>                                                                    8080/TCP                     76m
+viewpage                      ClusterIP      10.100.70.172    <none>                                                                    8080/TCP                     84m
+```
+
 ## Correlation
 
 고객이 주문취소(cancel) 요청을 했을 경우, 결제 완료된 요청건에 대해 주문상태가 취소로 변경되었음을 확인하고 결제 취소 처리를 한다. 만약 이미 배대지배송(shipping)이 진행중인 주문건이면, 주문취소(cancel)을 할 수 없도록 동기식 구현을 적용하였다.

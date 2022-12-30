@@ -556,27 +556,22 @@ hystrix:
 - 60초 동안 실시
 
 ```
-$ siege -c100 -t60S -r10 --content-type "application/json" 'http://a3a5c914c8909446fa3847d0198dc212-1810891788.eu-west-3.elb.amazonaws.com:8080/orders POST {"itemNo": "1001"}'
+$ siege -c10 -t40S -r10 --content-type "application/json" 'http://order:8080/orders POST {"itemNo": "1001"}'
 
 ** SIEGE 4.0.5
 ** Preparing 100 concurrent users for battle.
 The server is now under siege...
 
-HTTP/1.1 201     0.68 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     0.68 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     0.70 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     0.70 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     0.73 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     0.75 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     0.77 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     0.97 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     0.81 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     0.87 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.12 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.16 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.17 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.26 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.25 secs:     207 bytes ==> POST http://localhost:8081/orders
+HTTP/1.1 201     3.80 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.00 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     3.86 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     3.88 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.01 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.02 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.03 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     3.93 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.12 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     3.57 secs:     475 bytes ==> POST http://order:8080/orders
 
 * 요청이 과도하여 CB를 동작함 요청을 차단
 
@@ -590,18 +585,13 @@ HTTP/1.1 500     1.24 secs:     248 bytes ==> POST http://localhost:8081/orders
 
 * 요청을 어느정도 돌려보내고나니, 기존에 밀린 일들이 처리되었고, 회로를 닫아 요청을 다시 받기 시작
 
-HTTP/1.1 201     1.46 secs:     207 bytes ==> POST http://localhost:8081/orders  
-HTTP/1.1 201     1.33 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.36 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.63 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.65 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.68 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.69 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.71 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.71 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.74 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.76 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     1.79 secs:     207 bytes ==> POST http://localhost:8081/orders
+HTTP/1.1 201     4.08 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     3.80 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.09 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     3.94 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     3.96 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     3.98 secs:     475 bytes ==> POST http://order:8080/orders
+HTTP/1.1 201     4.02 secs:     475 bytes ==> POST http://order:8080/orders
 
 * 다시 요청이 쌓이기 시작하여 건당 처리시간이 610 밀리를 살짝 넘기기 시작 => 회로 열기 => 요청 실패처리
 
@@ -646,27 +636,6 @@ HTTP/1.1 500     4.82 secs:     248 bytes ==> POST http://localhost:8081/orders
 HTTP/1.1 201     4.82 secs:     207 bytes ==> POST http://localhost:8081/orders
 HTTP/1.1 201     4.84 secs:     207 bytes ==> POST http://localhost:8081/orders
 HTTP/1.1 201     4.66 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     5.03 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     4.22 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     4.19 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     4.18 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.69 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.65 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     5.13 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     4.84 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     4.25 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     4.25 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.80 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     4.87 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     4.33 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.86 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     4.96 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     4.34 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 500     4.04 secs:     248 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.50 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.95 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.54 secs:     207 bytes ==> POST http://localhost:8081/orders
-HTTP/1.1 201     4.65 secs:     207 bytes ==> POST http://localhost:8081/orders
 
 
 :

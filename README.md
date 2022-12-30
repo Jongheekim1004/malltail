@@ -12,6 +12,7 @@
     - [DDD 의 적용](#ddd-의-적용)
     - [Saga(Pub/Sub) 의 적용](#saga-적용)
     - [CQRS 의 적용](#cqrs-적용)
+    - [API 게이트웨이](#API-게이트웨이)
     - [Correlation 의 적용](#ddd-의-적용)     
     - [Request/Response 의 적용](#ddd-의-적용)         
     - [폴리글랏 퍼시스턴스 및-프로그래밍 (Persistence Volume)](#폴리글랏-퍼시스턴스-및-프로그래밍-(Persistence Volume))

@@ -518,6 +518,10 @@ $ kubectl apply -f Deployment.yml -n default
  
 ![image](https://user-images.githubusercontent.com/117247400/210026926-4b5d20dd-8ac5-454e-8858-20935d340b4b.png)
 
+- [istio-injection 상태 enable 확인] 
+ 명령어 : $ kubectl label namespace default istio-injection=enabled
+![image](https://user-images.githubusercontent.com/117247400/210027188-1cb91d86-9523-4cdd-a216-81d43b89efff.png)
+
 
 - Hystrix 를 설정:  요청처리 쓰레드에서 처리시간이 610 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
 ```

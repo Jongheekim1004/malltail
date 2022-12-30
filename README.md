@@ -673,16 +673,7 @@ Shortest transaction:	        0.00
 ![image](https://user-images.githubusercontent.com/117131393/210037802-56bf434f-6529-4afd-ac6f-da76d06a264e.png)
 
 - siege 의 로그를 보아도 전체적인 성공률이 높아진 것을 확인 할 수 있다. 
-```
-Transactions:		        5078 hits
-Availability:		       92.45 %
-Elapsed time:		       120 secs
-Data transferred:	        0.34 MB
-Response time:		        5.60 secs
-Transaction rate:	       17.15 trans/sec
-Throughput:		        0.01 MB/sec
-Concurrency:		       96.02
-```
+![image](https://user-images.githubusercontent.com/117131393/210038081-1ef9f303-4583-4075-bc0d-772bd2cebe5d.png)
 
 
 ## 무정지 재배포

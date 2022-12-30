@@ -307,7 +307,7 @@ http localhost:8086/statusViews
 ![image](https://user-images.githubusercontent.com/117247400/209908194-78527ae4-a404-4217-9d9a-54a594ed99fc.png)
 
 - viewPage를 통해 구현 (Order, Shipping, Delivery 등 이벤트 발생 시, Pub/Sub 기반으로 별도 statusView 테이블에 저장)
-- 실제로 view 페이지를 조회해 보면 모든 order에 대한 전반적인 예약 상태, 결제 상태, 리뷰 건수 등의 정보를 종합적으로 알 수 있다.
+- 실제로 view 페이지를 조회해 보면 모든 order에 대한 전반적인 아이템번호, 주문상태 등의 정보를 종합적으로 알 수 있다.
 
 ![image](https://user-images.githubusercontent.com/13111333/209935374-2aaabe7a-0929-4b6e-90c2-fe141a493d2c.png)
 

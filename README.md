@@ -494,7 +494,67 @@ http :8081/orders itemNo=2001
 
 
 각 서비스들은 별개의 source repository 에 구성되었고, CI/CD 방식이 아닌 서비스들을 개별적으로 반영하는 방식으로 구현하였다.
-- 서비스들을 구동시키는 명령어들 (추가하기!!!)
+
+1. 마이크로 서비스별 이미지 docker image build 및 push
+
+```
+docker build -t rktmaudtn/order:v# . 
+docker pysh rktmaudtn/order:v#
+```
+
+2. aws eks 서비스 내 deploy 및 service 생성
+
+```
+kubectl apply -f kubernetes/deployment.yaml
+kubectl apply -f kubernetes/service.yaml
+```
+
+```
+##############################
+deployment.yaml 예시
+##############################
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order
+  labels:
+    app: order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      containers:
+        - name: order
+          image: rktmaudtn/order:v2
+          ports:
+            - containerPort: 8080
+
+```
+
+3. SVC 정보
+
+```
+NAME                          TYPE           CLUSTER-IP       EXTERNAL-IP                                                               PORT(S)                      AGE
+gateway                       LoadBalancer   10.100.54.179    a3a5c914c8909446fa3847d0198dc212-1810891788.eu-west-3.elb.amazonaws.com   8080:31521/TCP               155m
+kubernetes                    ClusterIP      10.100.0.1       <none>                                                                    443/TCP                      178m
+my-kafka                      ClusterIP      10.100.1.49      <none>                                                                    9092/TCP                     153m
+my-kafka-headless             ClusterIP      None             <none>                                                                    9092/TCP,9093/TCP            153m
+my-kafka-zookeeper            ClusterIP      10.100.54.55     <none>                                                                    2181/TCP,2888/TCP,3888/TCP   153m
+my-kafka-zookeeper-headless   ClusterIP      None             <none>                                                                    2181/TCP,2888/TCP,3888/TCP   153m
+mysql                         ClusterIP      10.100.49.58     <none>                                                                    3306/TCP                     97m
+order                         ClusterIP      10.100.179.173   <none>                                                                    8080/TCP                     85m
+pay                           ClusterIP      10.100.90.93     <none>                                                                    8080/TCP                     115s
+shipping                      ClusterIP      10.100.27.206    <none>                                                                    8080/TCP                     84m
+shop                          ClusterIP      10.100.144.162   <none>                                                                    8080/TCP                     76m
+viewpage                      ClusterIP      10.100.70.172    <none>                                                                    8080/TCP                     84m
+```
 
 
 ## 동기식 호출 / 서킷 브레이킹 / 장애격리 / 모니터링

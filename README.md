@@ -941,7 +941,8 @@ http://af831838952b14d99a6a49f7d91a4034-1469197019.eu-west-3.elb.amazonaws.com:2
 ![image](https://user-images.githubusercontent.com/117131393/210037833-9d7465ab-0e88-47a0-931f-83409a444985.png)
 
 - 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
-![image](https://user-images.githubusercontent.com/117131393/210046008-420c443c-6536-414d-8a6a-8ac9c8a2eef7.png)
+![image](https://user-images.githubusercontent.com/117131393/210048342-0fe457bb-08f9-46d6-bdf5-6e0803c9435f.png)
+
 
 - siege 의 로그를 보아도 전체적인 성공률이 높아진 것을 확인 할 수 있다. 
 ![image](https://user-images.githubusercontent.com/117131393/210038141-cfae076c-9556-4a8c-af61-67b3a6de9909.png)

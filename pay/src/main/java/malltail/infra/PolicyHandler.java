@@ -26,17 +26,10 @@ public class PolicyHandler{
     public void wheneverOrderCanceled_CancelPayment(@Payload OrderCanceled orderCanceled){
 
         OrderCanceled event = orderCanceled;
-        System.out.println("\n\n##### listener CancelPayment : " + orderCanceled + "\n\n");
-
-
-        
+        System.out.println("\n\n##### listener CancelPayment : " + orderCanceled + "\n\n");   
 
         // Sample Logic //
         Payment.cancelPayment(event);
-        
-
-        
-
     }
 
 }

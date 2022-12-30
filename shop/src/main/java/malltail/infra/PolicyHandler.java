@@ -28,15 +28,9 @@ public class PolicyHandler{
         OrderPaid event = orderPaid;
         System.out.println("\n\n##### listener OrderInfoUpdate : " + orderPaid + "\n\n");
 
-
-        
-
         // Sample Logic //
         ShopManagement.orderInfoUpdate(event);
         
-
-        
-
     }
     @StreamListener(value=KafkaProcessor.INPUT, condition="headers['type']=='OrderCanceled'")
     public void wheneverOrderCanceled_OrderInfoUpdate(@Payload OrderCanceled orderCanceled){
@@ -44,15 +38,9 @@ public class PolicyHandler{
         OrderCanceled event = orderCanceled;
         System.out.println("\n\n##### listener OrderInfoUpdate : " + orderCanceled + "\n\n");
 
-
-        
-
         // Sample Logic //
         ShopManagement.orderInfoUpdate(event);
         
-
-        
-
     }
 
 }

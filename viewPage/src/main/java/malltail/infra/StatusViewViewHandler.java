@@ -71,7 +71,7 @@ public class StatusViewViewHandler {
                 for(StatusView statusView : statusViewList){
                     // view 객체에 이벤트의 eventDirectValue 를 set 함
                     statusView.setDeliveryStatus(orderDeliveryStarted.getDeliveryStatus());
-                    statusView.setUpdateDate(sysdate);
+                    //statusView.setUpdateDate(sysdate);
                 // view 레파지 토리에 save
                 statusViewRepository.save(statusView);
                 }
@@ -90,7 +90,7 @@ public class StatusViewViewHandler {
                 for(StatusView statusView : statusViewList){
                     // view 객체에 이벤트의 eventDirectValue 를 set 함
                     statusView.setOrderStatus(orderRejected.getOrderStatus());
-                    statusView.setUpdateDate(sysdate);
+                    //statusView.setUpdateDate(sysdate);
                 // view 레파지 토리에 save
                 statusViewRepository.save(statusView);
                 }
@@ -109,7 +109,7 @@ public class StatusViewViewHandler {
                 for(StatusView statusView : statusViewList){
                     // view 객체에 이벤트의 eventDirectValue 를 set 함
                     statusView.setOrderStatus(orderPaid.getPaystatus());
-                    statusView.setUpdateDate(sysdate);
+                    //statusView.setUpdateDate(sysdate);
                 // view 레파지 토리에 save
                 statusViewRepository.save(statusView);
                 }
@@ -124,7 +124,7 @@ public class StatusViewViewHandler {
             if (!shippingStarted.validate()) return;
                 // view 객체 조회
 
-                List<StatusView> statusViewList = statusViewRepository.findByOrderNo(shippingStarted.getOrderNo());
+                List<StatusView> statusViewList = statusViewRepository.findByOrderNo(Long.valueOf(shippingStarted.getOrderNo()));
                 for(StatusView statusView : statusViewList){
                     // view 객체에 이벤트의 eventDirectValue 를 set 함
                     statusView.setDeliveryStatus(shippingStarted.getShippingStatus());
@@ -142,7 +142,7 @@ public class StatusViewViewHandler {
             if (!shippingCompleted.validate()) return;
                 // view 객체 조회
 
-                List<StatusView> statusViewList = statusViewRepository.findByOrderNo(shippingCompleted.getOrderNo());
+                List<StatusView> statusViewList = statusViewRepository.findByOrderNo(Long.valueOf(shippingCompleted.getOrderNo()));
                 for(StatusView statusView : statusViewList){
                     // view 객체에 이벤트의 eventDirectValue 를 set 함
                     statusView.setDeliveryStatus(shippingCompleted.getShippingStatus());
@@ -162,7 +162,7 @@ public class StatusViewViewHandler {
             if (!customsRejected.validate()) return;
                 // view 객체 조회
 
-                List<StatusView> statusViewList = statusViewRepository.findByOrderNo(customsRejected.getInvoiceNo());
+                List<StatusView> statusViewList = statusViewRepository.findByOrderNo(Long.valueOf(customsRejected.getOrderNo()));
                 for(StatusView statusView : statusViewList){
                     // view 객체에 이벤트의 eventDirectValue 를 set 함
                     statusView.setDeliveryStatus(customsRejected.getDeliveryStatus());
@@ -181,7 +181,7 @@ public class StatusViewViewHandler {
             if (!deliveryStarted.validate()) return;
                 // view 객체 조회
 
-                List<StatusView> statusViewList = statusViewRepository.findByOrderNo(deliveryStarted.getInvoiceNo());
+                List<StatusView> statusViewList = statusViewRepository.findByOrderNo(Long.valueOf(deliveryStarted.getOrderNo()));
                 for(StatusView statusView : statusViewList){
                     // view 객체에 이벤트의 eventDirectValue 를 set 함
                     statusView.setDeliveryStatus(deliveryStarted.getDeliveryStatus());
@@ -201,7 +201,7 @@ public class StatusViewViewHandler {
             if (!deliveryCompleted.validate()) return;
                 // view 객체 조회
 
-                List<StatusView> statusViewList = statusViewRepository.findByOrderNo(deliveryCompleted.getInvoiceNo());
+                List<StatusView> statusViewList = statusViewRepository.findByOrderNo(Long.valueOf(deliveryCompleted.getOrderNo()));
                 for(StatusView statusView : statusViewList){
                     // view 객체에 이벤트의 eventDirectValue 를 set 함
                     statusView.setDeliveryStatus(deliveryCompleted.getDeliveryStatus());

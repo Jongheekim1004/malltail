@@ -19,9 +19,6 @@ public class OrderController {
     @Autowired
     OrderRepository orderRepository;
 
-
-
-
     @RequestMapping(value = "orders/{id}/cancel",
         method = RequestMethod.PUT,
         produces = "application/json;charset=UTF-8")
@@ -37,8 +34,4 @@ public class OrderController {
             return order;
             
     }
-    
-
-
-
 }

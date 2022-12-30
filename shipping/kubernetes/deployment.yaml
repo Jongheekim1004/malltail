@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: shipping
-          image: username/shipping:latest
+          image: rktmaudtn/shipping:latest
           ports:
             - containerPort: 8080
           readinessProbe:

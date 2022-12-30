@@ -27,6 +27,15 @@ public class Payment  {
     
     private Long itemNo;
 
+    @PrePersist
+    public void onPrePersist(){  //적당한 시간 끌기        
+        try {
+            Thread.currentThread().sleep((long) (400 + Math.random() * 220));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @PostPersist
     public void onPostPersist(){
 

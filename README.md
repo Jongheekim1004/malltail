@@ -670,18 +670,9 @@ https://labs.msaez.io/#/courses/cna-full/32c3e5c0-7cd9-11ed-b37b-0b0e73d05d98/#o
 - CB 에서 했던 방식대로 POST방식으로 부하를 걸어준다.
 ![image](https://user-images.githubusercontent.com/117131393/210037472-1936e7d4-ddca-47e7-ab66-702ce87971b4.png)
 
-- 오토스케일이 어떻게 되고 있는지 모니터링을 걸어둔다:
-```
-kubectl get deploy pay -w
-```
 - 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
-```
-NAME    DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-pay     1         1         1            1           17s
-pay     1         2         1            1           45s
-pay     1         4         1            1           1m
-:
-```
+![image](https://user-images.githubusercontent.com/117131393/210037623-64aed22e-b483-456f-8b18-001d2643833d.png)
+
 - siege 의 로그를 보아도 전체적인 성공률이 높아진 것을 확인 할 수 있다. 
 ```
 Transactions:		        5078 hits

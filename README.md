@@ -826,5 +826,6 @@ Shortest transaction:           0.01
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
 
+![image](https://user-images.githubusercontent.com/117131393/210038774-df46fff0-fe30-44e4-8858-6435a4050ffb.png)
 
 

@@ -506,10 +506,11 @@ https://labs.msaez.io/#/courses/cna-full/32c3e5c0-7cd9-11ed-b37b-0b0e73d05d98/#o
 - 통합 모니터링 툴을 이용하여 서비스들의 이상 현상들을 모니터링하도록 함
 
 $ kubectl label namespace default istio-injection=enabled
+
 $ kubectl apply -f Deployment.yml -n default
 
 --> 아랫쪽의 코드 부분은 수정 필요!!!
---> 아랫쪽의 코드 부분은 수정 필요!!!
+
 
 
 - Hystrix 를 설정:  요청처리 쓰레드에서 처리시간이 610 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정

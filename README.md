@@ -989,7 +989,7 @@ root@siege:/# siege -c100 -t60S -v http://order:8080/orders --delay=1S
 - seige 의 화면으로 넘어가서 Availability 가 100% 미만으로 떨어졌는지 확인
 ```
 Lifting the server siege...
-Transactions:                  11632 hits
+Transactions:                  10368 hits
 Availability:                 88.00 %
 Elapsed time:                  59.25 secs
 Data transferred:               3.27 MB
@@ -997,7 +997,7 @@ Response time:                  0.01 secs
 Transaction rate:             198.85 trans/sec
 Throughput:                     0.06 MB/sec
 Concurrency:                    1.32
-Successful transactions:       11782
+Successful transactions:       10368
 Failed transactions:               0
 Longest transaction:            0.29
 Shortest transaction:           0.00

@@ -668,7 +668,7 @@ https://labs.msaez.io/#/courses/cna-full/32c3e5c0-7cd9-11ed-b37b-0b0e73d05d98/#o
 ![image](https://user-images.githubusercontent.com/117131393/210024823-a7cc0f98-96d6-401e-b847-eab2cd7ff975.png)
 
 - CB 에서 했던 방식대로 POST방식으로 부하를 걸어준다.
-![image](https://user-images.githubusercontent.com/117131393/210037472-1936e7d4-ddca-47e7-ab66-702ce87971b4.png)
+![image](https://user-images.githubusercontent.com/117131393/210037766-ad4a48d0-8131-4b56-ad88-1f809ab8d40b.png)
 
 - 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
 ![image](https://user-images.githubusercontent.com/117131393/210037697-01e4cf2b-de74-4545-ae83-a9091dfd8c6a.png)

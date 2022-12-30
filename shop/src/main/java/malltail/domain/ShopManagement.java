@@ -142,24 +142,12 @@ public class ShopManagement  {
 
     public static void orderInfoUpdate(OrderPaid orderPaid){
 
-        /** Example 1:  new item 
         ShopManagement shopManagement = new ShopManagement();
-        repository().save(shopManagement);
+        shopManagement.setOrderNo(orderPaid.getOrderNo());
+        shopManagement.setItemNo(orderPaid.getItemNo());
+        shopManagement.setDeliveryStatus("Ready");
 
-        */
-
-        /** Example 2:  finding and process
-        
-        repository().findById(orderPaid.get???()).ifPresent(shopManagement->{
-            
-            shopManagement // do something
-            repository().save(shopManagement);
-
-
-         });
-        */
-
-        
+        repository().save(shopManagement);        
     }
     public static void orderInfoUpdate(OrderCanceled orderCanceled){
 

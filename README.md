@@ -771,6 +771,22 @@ Concurrency:		       96.02
 ```
 # deployment.yaml 의 readiness probe 의 설정:
 
+  readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
 
 kubectl apply -f kubernetes/deployment.yaml
 ```

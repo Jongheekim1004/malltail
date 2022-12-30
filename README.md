@@ -730,7 +730,6 @@ Shortest transaction:	        0.00
 ![image](https://user-images.githubusercontent.com/117131393/210037833-9d7465ab-0e88-47a0-931f-83409a444985.png)
 
 - 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
-![image](https://user-images.githubusercontent.com/117131393/210037802-56bf434f-6529-4afd-ac6f-da76d06a264e.png)
 ![image](https://user-images.githubusercontent.com/117131393/210038209-7937a74f-1ae9-4f88-bd3e-542f27c2bbf3.png)
 
 - siege 의 로그를 보아도 전체적인 성공률이 높아진 것을 확인 할 수 있다. 

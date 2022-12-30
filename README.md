@@ -671,7 +671,7 @@ https://labs.msaez.io/#/courses/cna-full/32c3e5c0-7cd9-11ed-b37b-0b0e73d05d98/#o
 ![image](https://user-images.githubusercontent.com/117131393/210037472-1936e7d4-ddca-47e7-ab66-702ce87971b4.png)
 
 - 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
-![image](https://user-images.githubusercontent.com/117131393/210037623-64aed22e-b483-456f-8b18-001d2643833d.png)
+![image](https://user-images.githubusercontent.com/117131393/210037697-01e4cf2b-de74-4545-ae83-a9091dfd8c6a.png)
 
 - siege 의 로그를 보아도 전체적인 성공률이 높아진 것을 확인 할 수 있다. 
 ```

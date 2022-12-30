@@ -505,10 +505,6 @@ https://labs.msaez.io/#/courses/cna-full/32c3e5c0-7cd9-11ed-b37b-0b0e73d05d98/#o
 - 시나리오는 주문요청완료되면 동기화되어 결재로 연결(RESTful Request/Response 방식)되어 처리되도록 구현되어 있고, 주문 요청이 과도할 경우 결재서비스의 CB를 통하여 장애격리.
 - 통합 모니터링 툴을 이용하여 서비스들의 이상 현상들을 모니터링하도록 함 ( kiali /prometheus/ grafana )
 
-$ kubectl label namespace default istio-injection=enabled
-
-$ kubectl apply -f Deployment.yml -n default
-
 --> 아랫쪽의 코드 부분은 수정 필요!!!
 - [istio 설치]
 
@@ -519,6 +515,7 @@ $ kubectl apply -f Deployment.yml -n default
 ![image](https://user-images.githubusercontent.com/117247400/210026926-4b5d20dd-8ac5-454e-8858-20935d340b4b.png)
 
 - [istio-injection 상태 enable 확인] 
+
  명령어 : $ kubectl label namespace default istio-injection=enabled
 ![image](https://user-images.githubusercontent.com/117247400/210027188-1cb91d86-9523-4cdd-a216-81d43b89efff.png)
 

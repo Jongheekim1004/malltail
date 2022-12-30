@@ -76,7 +76,7 @@ spring:
 
 api:
   url:
-    pay: localhost:8082
-    shipping: localhost:8084
+    pay: pay:8080
+    shipping: shipping:8080
 
 
